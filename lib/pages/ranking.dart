@@ -22,9 +22,9 @@ class RankingPage extends StatelessWidget {
           ), 
           body: const TabBarView(
             children: <Widget>[
-              OveralRatingPage(),
-              AttackRankingPage(),
-              DefendRankingPage(),
+              OveralRankingList(),
+              AttackRankingList(),
+              DefendRankingList(),
             ],
           ),
         ));
@@ -32,128 +32,70 @@ class RankingPage extends StatelessWidget {
 }
 
 
-class OveralRatingPage extends StatefulWidget {
-  const OveralRatingPage({super.key});
+// Base class for the ranking pages.
+abstract class RankingList extends StatefulWidget {
+  const RankingList({super.key});
+
+  String get rankingType;
 
   @override
-  State<OveralRatingPage> createState() => _OveralRatingPageState();
+  State<RankingList> createState() => _RankingListState();
 }
 
-class _OveralRatingPageState extends State<OveralRatingPage> {
+class _RankingListState extends State<RankingList> {
   late Future<List<Player>> futurePlayers;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    futurePlayers = fetchRanking("");
+    futurePlayers = fetchRanking(widget.rankingType);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: futurePlayers,
-       builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      return ListView.builder(
-        itemCount: snapshot.data!.length,
-        itemBuilder: (context, index) {
-          final Player player = snapshot.data![index];
-          return ListTile(
-            title: Text(player.name),
-            subtitle: Text(player.rating.toString()),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              final Player player = snapshot.data![index];
+              return ListTile(
+                title: Text(player.name),
+                subtitle: Text(player.getRanking(widget.rankingType)),
+              );
+            },
           );
-        },
-      );
-    } else if (snapshot.hasError) {
-      return Text('${snapshot.error}');
-    }
+        } else if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
 
-    // By default, show a loading spinner.
-    return const CircularProgressIndicator();
-  },);
+        // By default, show a loading spinner.
+        return const CircularProgressIndicator();
+      },
+    );
   }
 }
 
-class AttackRankingPage extends StatefulWidget {
-   const AttackRankingPage({super.key});
+// Concrete ranking pages.
+class OveralRankingList extends RankingList {
+  const OveralRankingList({super.key});
 
   @override
-  State<AttackRankingPage> createState() => _AttackRankingPageState();
+  String get rankingType => "";
 }
 
-class _AttackRankingPageState extends State<AttackRankingPage> {
-   late Future<List<Player>> futurePlayers;
+class AttackRankingList extends RankingList {
+  const AttackRankingList({super.key});
 
   @override
-  void initState(){
-    super.initState();
-    futurePlayers = fetchRanking("AttackRating");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: futurePlayers,
-       builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      return ListView.builder(
-        itemCount: snapshot.data!.length,
-        itemBuilder: (context, index) {
-          final Player player = snapshot.data![index];
-          return ListTile(
-            title: Text(player.name),
-            subtitle: Text(player.attackRating.toString()),
-          );
-        },
-      );
-    } else if (snapshot.hasError) {
-      return Text('${snapshot.error}');
-    }
-
-    // By default, show a loading spinner.
-    return const CircularProgressIndicator();
-  },);
-  }
+  String get rankingType => "AttackRating";
 }
 
-class DefendRankingPage extends StatefulWidget {
-   const DefendRankingPage({super.key});
+class DefendRankingList extends RankingList {
+  const DefendRankingList({super.key});
 
   @override
-  State<DefendRankingPage> createState() => _DefenendRankingPageState();
-}
-
-class _DefenendRankingPageState extends State<DefendRankingPage> {
-   late Future<List<Player>> futurePlayers;
-
-  @override
-  void initState(){
-    super.initState();
-    futurePlayers = fetchRanking("DefendRating");
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: futurePlayers,
-       builder: (context, snapshot) {
-    if (snapshot.hasData) {
-      return ListView.builder(
-        itemCount: snapshot.data!.length,
-        itemBuilder: (context, index) {
-          final Player player = snapshot.data![index];
-          return ListTile(
-            title: Text(player.name),
-            subtitle: Text(player.defendRating.toString()),
-          );
-        },
-      );
-    } else if (snapshot.hasError) {
-      return Text('${snapshot.error}');
-    }
-
-    // By default, show a loading spinner.
-    return const CircularProgressIndicator();
-  },);
-  }
+  String get rankingType => "DefendRating";
 }

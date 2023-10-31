@@ -13,6 +13,18 @@ class Player {
     required this.defendRating,
   });
 
+   String getRanking(rankingType) {
+    if (rankingType == "") {
+      return rating.toString();
+    } else if (rankingType == "AttackRating") {
+      return attackRating.toString();
+    } else if (rankingType == "DefendRating") {
+      return defendRating.toString();
+    } else {
+      return "Unknown ranking type";
+    }
+  }
+
   factory Player.fromJson(Map<String, dynamic> json) {
     return Player(
       id: json['id'],
