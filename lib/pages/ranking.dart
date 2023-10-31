@@ -23,8 +23,8 @@ class RankingPage extends StatelessWidget {
           body: const TabBarView(
             children: <Widget>[
               OveralRatingPage(),
-              AttackRatingPage(),
-              DefendRatingPage(),
+              AttackRankingPage(),
+              DefendRankingPage(),
             ],
           ),
         ));
@@ -45,7 +45,7 @@ class _OveralRatingPageState extends State<OveralRatingPage> {
   @override
   void initState(){
     super.initState();
-    futurePlayers = fetchOveralRanking();
+    futurePlayers = fetchRanking("");
   }
 
   @override
@@ -74,24 +74,86 @@ class _OveralRatingPageState extends State<OveralRatingPage> {
   }
 }
 
-class AttackRatingPage extends StatelessWidget {
-  const AttackRatingPage({super.key});
+class AttackRankingPage extends StatefulWidget {
+   const AttackRankingPage({super.key});
+
+  @override
+  State<AttackRankingPage> createState() => _AttackRankingPageState();
+}
+
+class _AttackRankingPageState extends State<AttackRankingPage> {
+   late Future<List<Player>> futurePlayers;
+
+  @override
+  void initState(){
+    super.initState();
+    futurePlayers = fetchRanking("AttackRating");
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Attack"),
-    );
+    return FutureBuilder(
+      future: futurePlayers,
+       builder: (context, snapshot) {
+    if (snapshot.hasData) {
+      return ListView.builder(
+        itemCount: snapshot.data!.length,
+        itemBuilder: (context, index) {
+          final Player player = snapshot.data![index];
+          return ListTile(
+            title: Text(player.name),
+            subtitle: Text(player.attackRating.toString()),
+          );
+        },
+      );
+    } else if (snapshot.hasError) {
+      return Text('${snapshot.error}');
+    }
+
+    // By default, show a loading spinner.
+    return const CircularProgressIndicator();
+  },);
   }
 }
 
-class DefendRatingPage extends StatelessWidget {
-  const DefendRatingPage({super.key});
+class DefendRankingPage extends StatefulWidget {
+   const DefendRankingPage({super.key});
+
+  @override
+  State<DefendRankingPage> createState() => _DefenendRankingPageState();
+}
+
+class _DefenendRankingPageState extends State<DefendRankingPage> {
+   late Future<List<Player>> futurePlayers;
+
+  @override
+  void initState(){
+    super.initState();
+    futurePlayers = fetchRanking("DefendRating");
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Defend"),
-    );
+    return FutureBuilder(
+      future: futurePlayers,
+       builder: (context, snapshot) {
+    if (snapshot.hasData) {
+      return ListView.builder(
+        itemCount: snapshot.data!.length,
+        itemBuilder: (context, index) {
+          final Player player = snapshot.data![index];
+          return ListTile(
+            title: Text(player.name),
+            subtitle: Text(player.defendRating.toString()),
+          );
+        },
+      );
+    } else if (snapshot.hasError) {
+      return Text('${snapshot.error}');
+    }
+
+    // By default, show a loading spinner.
+    return const CircularProgressIndicator();
+  },);
   }
 }
