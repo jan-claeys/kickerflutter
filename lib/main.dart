@@ -31,10 +31,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    int currentPageIndex = 0;
 
     return Scaffold(
       bottomNavigationBar: NavigationBar(
@@ -45,10 +45,37 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
-          NavigationDestination(icon: Icon(Icons.star_border), label: "Ranking"),
-          NavigationDestination(icon: Icon(Icons.history_outlined), label: "History"),
+          NavigationDestination(icon: Icon(Icons.star_border), selectedIcon: Icon(Icons.star),label: "Ranking"),
+          NavigationDestination(icon: Icon(Icons.access_time), selectedIcon: Icon(Icons.access_time_filled_outlined), label: "Geschiedenis"),
         ],
       ),
+      body: <Widget>[
+        const RankingPage(),
+        const HistoryPage(),
+      ][currentPageIndex],
     );
   }
 }
+
+class RankingPage extends StatelessWidget{
+  const RankingPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text("Ranking"),
+    );
+  }
+}
+
+class HistoryPage extends StatelessWidget{
+  const HistoryPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text("History"),
+    );
+  }
+}
+
