@@ -35,18 +35,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index)=> {
+        onDestinationSelected: (int index) => {
           setState(() {
             currentPageIndex = index;
           })
         },
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
-          NavigationDestination(icon: Icon(Icons.star_border), selectedIcon: Icon(Icons.star),label: "Ranking"),
-          NavigationDestination(icon: Icon(Icons.access_time), selectedIcon: Icon(Icons.access_time_filled_outlined), label: "Geschiedenis"),
+          NavigationDestination(
+              icon: Icon(Icons.star_border),
+              selectedIcon: Icon(Icons.star),
+              label: "Ranking"),
+          NavigationDestination(
+              icon: Icon(Icons.access_time),
+              selectedIcon: Icon(Icons.access_time_filled_outlined),
+              label: "Geschiedenis"),
         ],
       ),
       body: <Widget>[
@@ -57,18 +62,35 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class RankingPage extends StatelessWidget{
+class RankingPage extends StatelessWidget {
   const RankingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Ranking"),
-    );
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: const TabBar(
+              tabs: <Widget>[
+                Tab(text: "Overal"),
+                Tab(text: "Attack"),
+                Tab(text: "Defend"),
+              ],
+            ),
+          ),
+          body: const TabBarView(
+            children: <Widget>[
+              Center(child: Text("Overal")),
+              Center(child: Text("Attack")),
+              Center(child: Text("Defend")),
+            ],
+          ),
+        ));
   }
 }
 
-class HistoryPage extends StatelessWidget{
+class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
 
   @override
@@ -78,4 +100,3 @@ class HistoryPage extends StatelessWidget{
     );
   }
 }
-
