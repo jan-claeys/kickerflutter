@@ -1,4 +1,8 @@
+
 import 'package:flutter/material.dart';
+
+import 'pages/ranking.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -62,33 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class RankingPage extends StatelessWidget {
-  const RankingPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            bottom: const TabBar(
-              tabs: <Widget>[
-                Tab(text: "Overal"),
-                Tab(text: "Attack"),
-                Tab(text: "Defend"),
-              ],
-            ),
-          ),
-          body: const TabBarView(
-            children: <Widget>[
-              Center(child: Text("Overal")),
-              Center(child: Text("Attack")),
-              Center(child: Text("Defend")),
-            ],
-          ),
-        ));
-  }
-}
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
