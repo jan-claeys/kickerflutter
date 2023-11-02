@@ -21,7 +21,7 @@ class Player {
     } else if (rankingType == "DefendRating") {
       return defendRating.toString();
     } else {
-      return "Unknown ranking type";
+      throw Exception("Invalid ranking type");
     }
   }
 

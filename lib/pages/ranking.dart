@@ -19,7 +19,7 @@ class RankingPage extends StatelessWidget {
                 Tab(text: "Defend"),
               ],
             ),
-          ), 
+          ),
           body: const TabBarView(
             children: <Widget>[
               OveralRankingList(),
@@ -30,7 +30,6 @@ class RankingPage extends StatelessWidget {
         ));
   }
 }
-
 
 // Base class for the ranking pages.
 abstract class RankingList extends StatefulWidget {
@@ -61,10 +60,12 @@ class _RankingListState extends State<RankingList> {
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
               final Player player = snapshot.data![index];
-              return ListTile(
-                title: Text(player.name),
-                subtitle: Text(player.getRanking(widget.rankingType)),
-              );
+              return Padding( padding: const EdgeInsets.all(8),child: ListTile(
+                leading: CircleAvatar(
+                  child: Text((index + 1).toString()),
+                ),
+                title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(player.name, style: const TextStyle(fontSize: 20)), Text(player.rating.toString(), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))]),
+              ));
             },
           );
         } else if (snapshot.hasError) {
@@ -72,7 +73,13 @@ class _RankingListState extends State<RankingList> {
         }
 
         // By default, show a loading spinner.
-        return const CircularProgressIndicator();
+        return const SizedBox(
+            height: 16,
+            width: 16,
+            child: Center(
+                child: CircularProgressIndicator(
+              strokeWidth: 3,
+            )));
       },
     );
   }
