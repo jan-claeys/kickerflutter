@@ -22,14 +22,8 @@ class PlayerTile extends StatelessWidget {
           leading: CircleAvatar(
             child: Text((index + 1).toString()),
           ),
-          title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(player.name, style: const TextStyle(fontSize: 20)),
-                Text(player.getRanking(rankingType),
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold))
-              ]),
+          title: Text(player.name),
+          trailing: Text(player.getRanking(rankingType), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
         ));
   }
 }
