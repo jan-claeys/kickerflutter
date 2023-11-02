@@ -8,10 +8,10 @@ import 'playerTile.dart';
 class RankingList extends StatefulWidget {
   const RankingList({
     super.key,
-    required this.rankingType,
+    required this.orderBy,
     });
   
-  final String rankingType;
+  final String orderBy;
 
   @override
   State<RankingList> createState() => _RankingListState();
@@ -35,7 +35,7 @@ class _RankingListState extends State<RankingList> {
   void _loadMorePlayers() {
     _isLoading = true;
 
-    fetchRanking(widget.rankingType, pageNumber: pageNumber).then((players) {
+    fetchRanking(widget.orderBy, pageNumber: pageNumber).then((players) {
       if (players.isEmpty) {
         setState(() {
           _hasMore = false;
@@ -73,7 +73,7 @@ class _RankingListState extends State<RankingList> {
         }
 
         final Player player = _players[index];
-        return PlayerTile(player: player, rankingType: widget.rankingType, index: index,);
+        return PlayerTile(player: player, rankingType: widget.orderBy, index: index,);
       },
     );
   }

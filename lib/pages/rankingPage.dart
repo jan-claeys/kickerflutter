@@ -23,9 +23,9 @@ class RankingPage extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: <RankingList>[
-                  RankingList(rankingType: ""),
-                  RankingList(rankingType: "AttackRating"),
-                  RankingList(rankingType: "DefendRating"),
+                  RankingList(orderBy: ""),
+                  RankingList(orderBy: "AttackRating"),
+                  RankingList(orderBy: "DefendRating"),
                 ],
               ),
             ),
