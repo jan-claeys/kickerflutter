@@ -15,11 +15,10 @@ Future<List<Player>> fetchRanking(String order, {int pageNumber = 1}) async {
   );
 
   if (response.statusCode == 200) {
-    final List data = jsonDecode(response.body)["data"];
-    final int pageCount = jsonDecode(response.body)["pageCount"];
+    final List body = jsonDecode(response.body);
 
     final List<Player> players =
-        data.map((dynamic item) => Player.fromJson(item)).toList();
+        body.map((dynamic item) => Player.fromJson(item)).toList();
 
     return players;
   } else {

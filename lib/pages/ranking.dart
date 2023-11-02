@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../players/network.dart';
 import '../players/player.dart';
-import 'package:incrementally_loading_listview/incrementally_loading_listview.dart';
 
 class RankingPage extends StatelessWidget {
   const RankingPage({super.key});
@@ -32,115 +31,6 @@ class RankingPage extends StatelessWidget {
   }
 }
 
-// Base class for the ranking pages.
-abstract class RankingList extends StatefulWidget {
-  const RankingList({super.key});
-
-  String get rankingType;
-
-  @override
-  State<RankingList> createState() => _RankingListState();
-}
-
-class _RankingListState extends State<RankingList> {
-  late Future<List<Player>> initialPlayers;
-  late List<Player> players = [];
-  int pageNumber = 1;
-
-  @override
-  void initState() {
-    super.initState();
-    initialPlayers = fetchRanking(widget.rankingType).then((res) => players = res);
-  }
-
-  Future _loadMorePlayers() async {
-    pageNumber++;
-
-    var data = await fetchRanking(widget.rankingType, pageNumber: pageNumber);
-
-    players.addAll(data);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: initialPlayers,
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return const SizedBox(
-                height: 16,
-                width: 16,
-                child: Center(
-                    child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                )));
-
-          case ConnectionState.done:
-            return IncrementallyLoadingListView(
-                hasMore: () => true,
-                loadMore: () async {
-                  await _loadMorePlayers();
-                },
-                loadMoreOffsetFromBottom: 0,
-                itemBuilder: (context, index) {
-                  final Player player = snapshot.data![index];
-
-                  return Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Text((index + 1).toString()),
-                        ),
-                        title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(player.name,
-                                  style: const TextStyle(fontSize: 20)),
-                              Text(player.rating.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold))
-                            ]),
-                      ));
-                },
-                itemCount: () => players.length);
-
-          default:
-            return Text('${snapshot.error}');
-        }
-
-        // if (snapshot.hasData) {
-        //   return ListView.builder(
-        //     itemCount: snapshot.data!.length,
-        //     itemBuilder: (context, index) {
-        //       final Player player = snapshot.data![index];
-        //       return Padding( padding: const EdgeInsets.all(8),child: ListTile(
-        //         leading: CircleAvatar(
-        //           child: Text((index + 1).toString()),
-        //         ),
-        //         title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(player.name, style: const TextStyle(fontSize: 20)), Text(player.rating.toString(), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))]),
-        //       ));
-        //     },
-        //   );
-
-        // } else if (snapshot.hasError) {
-        //   return Text('${snapshot.error}');
-        // }
-
-        // // By default, show a loading spinner.
-        // return const SizedBox(
-        //     height: 16,
-        //     width: 16,
-        //     child: Center(
-        //         child: CircularProgressIndicator(
-        //       strokeWidth: 3,
-        //     )));
-      },
-    );
-  }
-}
-
 // Concrete ranking pages.
 class OveralRankingList extends RankingList {
   const OveralRankingList({super.key});
@@ -162,3 +52,91 @@ class DefendRankingList extends RankingList {
   @override
   String get rankingType => "DefendRating";
 }
+
+// Base class for the ranking pages.
+abstract class RankingList extends StatefulWidget {
+  const RankingList({super.key});
+
+  String get rankingType;
+
+  @override
+  State<RankingList> createState() => _RankingListState();
+}
+
+class _RankingListState extends State<RankingList> {
+
+  final List<Player> _players = [];
+  bool _isLoading = true;
+  bool _hasMore = true;
+  int pageNumber = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _isLoading = true;
+    _hasMore = true;
+    _loadMorePlayers();
+  }
+
+  void _loadMorePlayers() {
+    _isLoading = true;
+
+    fetchRanking(widget.rankingType, pageNumber: pageNumber).then((players) {
+      if (players.isEmpty) {
+        setState(() {
+          _hasMore = false;
+          _isLoading = false;
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          pageNumber++;
+          _players.addAll(players);
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: _hasMore ? _players.length + 1 : _players.length,
+      itemBuilder: (context, index) {
+
+        if (index >= _players.length) {
+          // Don't trigger if one async loading is already under way
+          if (!_isLoading) {
+            _loadMorePlayers();
+          }
+
+          return const Center(
+            child: SizedBox(
+              height: 24,
+              width: 24,
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        final Player player = _players[index];
+        return Padding(
+            padding: const EdgeInsets.all(8),
+            child: ListTile(
+              leading: CircleAvatar(
+                child: Text((index + 1).toString()),
+              ),
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(player.name, style: const TextStyle(fontSize: 20)),
+                    Text(player.getRanking(widget.rankingType),
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold))
+                  ]),
+            ));
+      },
+    );
+  }
+}
+
+
