@@ -5,10 +5,13 @@ import '../network.dart';
 import 'playerTile.dart';
 
 // Base class for the ranking pages.
-abstract class RankingList extends StatefulWidget {
-  const RankingList({super.key});
-
-  String get rankingType;
+class RankingList extends StatefulWidget {
+  const RankingList({
+    super.key,
+    required this.rankingType,
+    });
+  
+  final String rankingType;
 
   @override
   State<RankingList> createState() => _RankingListState();
@@ -75,26 +78,3 @@ class _RankingListState extends State<RankingList> {
     );
   }
 }
-
-//#region RankingList implementations
-class OveralRankingList extends RankingList {
-  const OveralRankingList({super.key});
-
-  @override
-  String get rankingType => "";
-}
-
-class AttackRankingList extends RankingList {
-  const AttackRankingList({super.key});
-
-  @override
-  String get rankingType => "AttackRating";
-}
-
-class DefendRankingList extends RankingList {
-  const DefendRankingList({super.key});
-
-  @override
-  String get rankingType => "DefendRating";
-}
-//#endregion

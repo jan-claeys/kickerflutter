@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/confirmedHistoryList.dart';
+
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
 
@@ -14,7 +16,15 @@ class HistoryPage extends StatelessWidget {
               Tab(text: "Confirmed"),
               Tab(text: "Not confirmed"),
             ],)
-          )
+          ),
+          Expanded(
+            child: TabBarView(
+              children: <Widget>[
+                ConfirmedHistoryList(),
+                Text("Not confirmed"),
+              ],
+            ),
+          ),
       ]),
     );
   }
