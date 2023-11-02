@@ -7,31 +7,29 @@ class RankingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return const DefaultTabController(
         length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-            bottom: const TabBar(
-              tabs: <Widget>[
-                Tab(text: "Overal"),
-                Tab(text: "Attack"),
-                Tab(text: "Defend"),
-              ],
+        child: Column(
+          children: [
+            SafeArea(
+              child: TabBar(
+                tabs: <Widget>[
+                  Tab(text: "Overal"),
+                  Tab(text: "Attack"),
+                  Tab(text: "Defend"),
+                ],
+              ),
             ),
-          ),
-          body: const TabBarView(
-            children: <Widget>[
-              OveralRankingList(),
-              AttackRankingList(),
-              DefendRankingList(),
-            ],
-          ),
+            Expanded(
+              child: TabBarView(
+                children: <Widget>[
+                  OveralRankingList(),
+                  AttackRankingList(),
+                  DefendRankingList(),
+                ],
+              ),
+            ),
+          ],
         ));
   }
 }
-
-
-
-
-
-
