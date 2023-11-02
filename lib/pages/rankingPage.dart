@@ -13,8 +13,8 @@ class RankingPage extends StatelessWidget {
           children: [
             SafeArea(
               child: TabBar(
-                tabs: <Widget>[
-                  Tab(text: "Overal"),
+                tabs: <Tab>[
+                  Tab(text: "Overall"),
                   Tab(text: "Attack"),
                   Tab(text: "Defend"),
                 ],
@@ -22,7 +22,7 @@ class RankingPage extends StatelessWidget {
             ),
             Expanded(
               child: TabBarView(
-                children: <Widget>[
+                children: <RankingList>[
                   OveralRankingList(),
                   AttackRankingList(),
                   DefendRankingList(),

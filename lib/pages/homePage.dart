@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
           NavigationDestination(
               icon: Icon(Icons.access_time),
               selectedIcon: Icon(Icons.access_time_filled_outlined),
-              label: "Geschiedenis"),
+              label: "History"),
         ],
       ),
       body: <Widget>[

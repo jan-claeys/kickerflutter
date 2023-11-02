@@ -5,8 +5,17 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("History"),
+    return const DefaultTabController(
+      length: 2,
+      child: Column(
+        children: [
+          SafeArea(
+            child: TabBar(tabs:<Tab> [
+              Tab(text: "Confirmed"),
+              Tab(text: "Not confirmed"),
+            ],)
+          )
+      ]),
     );
   }
 }
