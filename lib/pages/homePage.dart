@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
         const RankingPage(),
         const HistoryPage(),
       ][currentPageIndex],
-      floatingActionButton: FloatingActionButton( child: const Icon(Icons.add), onPressed: () {  },),
+      floatingActionButton: FloatingActionButton.extended( icon: const Icon(Icons.add), onPressed: () {  }, label: Text("New match"),),
     );
   }
 }
