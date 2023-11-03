@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'historyPage.dart';
+import 'newMatchPage.dart';
 import 'rankingPage.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -38,7 +39,14 @@ class _MyHomePageState extends State<MyHomePage> {
         const RankingPage(),
         const HistoryPage(),
       ][currentPageIndex],
-      floatingActionButton: FloatingActionButton.extended( icon: const Icon(Icons.add), onPressed: () {  }, label: Text("New match"),),
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const NewMatchPage()));
+        },
+        label: const Text("New match"),
+      ),
     );
   }
 }

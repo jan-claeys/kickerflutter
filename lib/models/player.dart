@@ -34,4 +34,9 @@ class Player {
       defendRating: json['defendRating'],
     );
   }
+
+  @override
+  String toString() {
+    return name;
+  }
 }
