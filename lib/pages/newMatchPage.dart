@@ -29,133 +29,155 @@ class _NewMatchPageState extends State<NewMatchPage> {
       appBar: AppBar(
         title: const Text('New match'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Your position:"),
-                SegmentedButton<Position>(
-                  segments: const [
-                    ButtonSegment<Position>(
-                        label: Text("Attacker"), value: Position.Attacker),
-                    ButtonSegment<Position>(
-                        label: Text("Defender"), value: Position.Defender),
-                  ],
-                  selected: <Position>{playerPosition},
-                  onSelectionChanged: (Set<Position> newSelection) {
-                    setState(() {
-                      playerPosition = newSelection.first;
-                    });
-                  },
-                ),
-                const SizedBox(height: 32),
-                DropdownSearch<Player>(
-                  mode: Mode.BOTTOM_SHEET,
-                  showSearchBox: true,
-                  label: "Ally",
-                  isFilteredOnline: true,
-                  onFind: (String? filter) => fetchPlayers(filter ?? ''),
-                  onChanged: (Player? value) => ally = value!,
-                ),
-                const SizedBox(height: 32),
-                DropdownSearch<Player>(
-                  mode: Mode.BOTTOM_SHEET,
-                  showSearchBox: true,
-                  label: "Opponent attacker",
-                  isFilteredOnline: true,
-                  onFind: (String? filter) => fetchPlayers(filter ?? ''),
-                  onChanged: (Player? value) => opponentAttacker = value!,
-                ),
-                const SizedBox(height: 32),
-                DropdownSearch<Player>(
-                  mode: Mode.BOTTOM_SHEET,
-                  showSearchBox: true,
-                  label: "Opponent deffender",
-                  isFilteredOnline: true,
-                  onFind: (String? filter) => fetchPlayers(filter ?? ''),
-                  onChanged: (Player? value) => opponentDefender = value!,
-                ),
-                const SizedBox(height: 32),
-                const Text("Score:"),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      width: 50,
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: playerScoreController,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text("Your position:"),
+                  SegmentedButton<Position>(
+                    segments: const [
+                      ButtonSegment<Position>(
+                          label: Text("Attacker"), value: Position.Attacker),
+                      ButtonSegment<Position>(
+                          label: Text("Defender"), value: Position.Defender),
+                    ],
+                    selected: <Position>{playerPosition},
+                    onSelectionChanged: (Set<Position> newSelection) {
+                      setState(() {
+                        playerPosition = newSelection.first;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 32),
+                  DropdownSearch<Player>(
+                    mode: Mode.BOTTOM_SHEET,
+                    showSearchBox: true,
+                    label: "Ally",
+                    isFilteredOnline: true,
+                    onFind: (String? filter) => fetchPlayers(filter ?? ''),
+                    onChanged: (Player? value) => ally = value!,
+                    popupItemBuilder: _customPopupItemBuilder,
+                  ),
+                  const SizedBox(height: 32),
+                  DropdownSearch<Player>(
+                    mode: Mode.BOTTOM_SHEET,
+                    showSearchBox: true,
+                    label: "Opponent attacker",
+                    isFilteredOnline: true,
+                    onFind: (String? filter) => fetchPlayers(filter ?? ''),
+                    onChanged: (Player? value) => opponentAttacker = value!,
+                    popupItemBuilder: _customPopupItemBuilder,
+                  ),
+                  const SizedBox(height: 32),
+                  DropdownSearch<Player>(
+                    mode: Mode.BOTTOM_SHEET,
+                    showSearchBox: true,
+                    label: "Opponent deffender",
+                    isFilteredOnline: true,
+                    onFind: (String? filter) => fetchPlayers(filter ?? ''),
+                    onChanged: (Player? value) => opponentDefender = value!,
+                    popupItemBuilder: _customPopupItemBuilder,
+                  ),
+                  const SizedBox(height: 32),
+                  const Text("Score:"),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        width: 50,
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          controller: playerScoreController,
+                        ),
                       ),
-                    ),
-                    const Text(" : ",
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      width: 50,
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        controller: opponentScoreController,
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 32),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ElevatedButton(
-                      onPressed: ()async {
-                        if (_formKey.currentState!.validate()) {
-                          final NewMatch newMatch = NewMatch(
-                            playerPosition: playerPosition,
-                            ally: ally,
-                            opponentAttacker: opponentAttacker,
-                            opponentDefender: opponentDefender,
-                            playerScore: int.parse(playerScoreController.text),
-                            opponentScore:
-                                int.parse(opponentScoreController.text),
-                          );
-                          try {
-                            await createMatch(newMatch);
-                            if (!context.mounted) return;
-                            Navigator.pop(context);
-                          } catch (e) {
-                            if (!context.mounted) return;
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                      title: const Text('Error'),
-                                      content: Text(e.toString()),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    ));
+                      const Text(" : ",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        width: 50,
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          controller: opponentScoreController,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            final NewMatch newMatch = NewMatch(
+                              playerPosition: playerPosition,
+                              ally: ally,
+                              opponentAttacker: opponentAttacker,
+                              opponentDefender: opponentDefender,
+                              playerScore: int.parse(playerScoreController.text),
+                              opponentScore:
+                                  int.parse(opponentScoreController.text),
+                            );
+                            try {
+                              await createMatch(newMatch);
+                              if (!context.mounted) return;
+                              Navigator.pop(context);
+                            } catch (e) {
+                              if (!context.mounted) return;
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => AlertDialog(
+                                        title: const Text('Error'),
+                                        content: Text(e.toString()),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context, 'OK'),
+                                            child: const Text('OK'),
+                                          ),
+                                        ],
+                                      ));
+                            }
                           }
-                        }
-                      },
-                      child: const Text('Submit'),
-                    ),
-                  ],
-                ),
-              ],
+                        },
+                        child: const Text('Submit'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
+}
+
+Widget _customPopupItemBuilder(
+    BuildContext context, dynamic item, bool isSelected) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 8),
+    decoration: !isSelected
+        ? null
+        : BoxDecoration(
+            border: Border.all(color: Theme.of(context).primaryColor),
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
+          ),
+    child: ListTile(
+      title: Text(item.toString()),
+    ),
+  );
 }
