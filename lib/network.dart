@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:kickerflutter/models/newMatch.dart';
 
 import 'models/player.dart';
 import 'models/match.dart';
@@ -24,7 +25,7 @@ Future<List<Player>> fetchRanking(String orderBy, {int pageNumber = 1}) async {
 
     return players;
   } else {
-    throw Exception('Failed to load player');
+    throw Exception('Failed to load ranking');
   }
 }
 
@@ -44,7 +45,7 @@ Future<List<Player>> fetchPlayers(String search, {int pageNumber = 1}) async {
 
     return players;
   } else {
-    throw Exception('Failed to load player');
+    throw Exception('Failed to load players');
   }
 }
 
@@ -64,6 +65,23 @@ Future<List<Match>> fetchHistory(bool isConfirmed, {int pageNumber = 1}) async {
 
     return matches;
   } else {
-    throw Exception('Failed to load match');
+    throw Exception('Failed to load history');
   }
+}
+
+Future<http.Response> createMatch(NewMatch match) async {
+  final response = await http.post(
+    Uri.parse('$baseUrl/Matches'),
+    headers: {
+      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.contentTypeHeader: "application/json",
+    },
+    body: jsonEncode(match.toJson()),
+  );
+
+   if (response.statusCode != 200) {
+    throw Exception(response.body);
+  }
+
+  return response;
 }

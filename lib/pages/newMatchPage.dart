@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 import 'package:kickerflutter/models/player.dart';
 
+import '../models/newMatch.dart';
 import '../network.dart';
 
 class NewMatchPage extends StatefulWidget {
@@ -13,11 +14,14 @@ class NewMatchPage extends StatefulWidget {
   State<NewMatchPage> createState() => _NewMatchPageState();
 }
 
-enum Position { attacker, defender }
-
 class _NewMatchPageState extends State<NewMatchPage> {
   final _formKey = GlobalKey<FormState>();
-  Position playerPosition = Position.attacker;
+  Position playerPosition = Position.Attacker;
+  late Player ally;
+  late Player opponentAttacker;
+  late Player opponentDefender;
+  TextEditingController playerScoreController = TextEditingController();
+  TextEditingController opponentScoreController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +41,9 @@ class _NewMatchPageState extends State<NewMatchPage> {
                 SegmentedButton<Position>(
                   segments: const [
                     ButtonSegment<Position>(
-                        label: Text("Attacker"), value: Position.attacker),
+                        label: Text("Attacker"), value: Position.Attacker),
                     ButtonSegment<Position>(
-                        label: Text("Defender"), value: Position.defender),
+                        label: Text("Defender"), value: Position.Defender),
                   ],
                   selected: <Position>{playerPosition},
                   onSelectionChanged: (Set<Position> newSelection) {
@@ -55,6 +59,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                   label: "Ally",
                   isFilteredOnline: true,
                   onFind: (String? filter) => fetchPlayers(filter ?? ''),
+                  onChanged: (Player? value) => ally = value!,
                 ),
                 const SizedBox(height: 32),
                 DropdownSearch<Player>(
@@ -63,6 +68,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                   label: "Opponent attacker",
                   isFilteredOnline: true,
                   onFind: (String? filter) => fetchPlayers(filter ?? ''),
+                  onChanged: (Player? value) => opponentAttacker = value!,
                 ),
                 const SizedBox(height: 32),
                 DropdownSearch<Player>(
@@ -71,37 +77,80 @@ class _NewMatchPageState extends State<NewMatchPage> {
                   label: "Opponent deffender",
                   isFilteredOnline: true,
                   onFind: (String? filter) => fetchPlayers(filter ?? ''),
+                  onChanged: (Player? value) => opponentDefender = value!,
                 ),
                 const SizedBox(height: 32),
                 const Text("Score:"),
-               
-                   Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        width: 50,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                        ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: 50,
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        controller: playerScoreController,
                       ),
-                      const Text(" : ",
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold)),
-                      SizedBox(
-                        width: 50,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                
+                    ),
+                    const Text(" : ",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      width: 50,
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        controller: opponentScoreController,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ElevatedButton(
+                      onPressed: ()async {
+                        if (_formKey.currentState!.validate()) {
+                          final NewMatch newMatch = NewMatch(
+                            playerPosition: playerPosition,
+                            ally: ally,
+                            opponentAttacker: opponentAttacker,
+                            opponentDefender: opponentDefender,
+                            playerScore: int.parse(playerScoreController.text),
+                            opponentScore:
+                                int.parse(opponentScoreController.text),
+                          );
+                          try {
+                            await createMatch(newMatch);
+                            if (!context.mounted) return;
+                            Navigator.pop(context);
+                          } catch (e) {
+                            if (!context.mounted) return;
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                      title: const Text('Error'),
+                                      content: Text(e.toString()),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ));
+                          }
+                        }
+                      },
+                      child: const Text('Submit'),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
