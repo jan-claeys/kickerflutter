@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -6,6 +5,7 @@ import 'package:kickerflutter/models/player.dart';
 
 import '../models/newMatch.dart';
 import '../network.dart';
+import '../widgets/dropdownSearch/dropdownSearch.dart';
 
 class NewMatchPage extends StatefulWidget {
   const NewMatchPage({super.key});
@@ -61,7 +61,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     isFilteredOnline: true,
                     onFind: (String? filter) => fetchPlayers(filter ?? ''),
                     onChanged: (Player? value) => ally = value!,
-                    popupItemBuilder: _customPopupItemBuilder,
+                    //popupItemBuilder: _customPopupItemBuilder,
                   ),
                   const SizedBox(height: 32),
                   DropdownSearch<Player>(
@@ -71,7 +71,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     isFilteredOnline: true,
                     onFind: (String? filter) => fetchPlayers(filter ?? ''),
                     onChanged: (Player? value) => opponentAttacker = value!,
-                    popupItemBuilder: _customPopupItemBuilder,
+                    //popupItemBuilder: _customPopupItemBuilder,
                   ),
                   const SizedBox(height: 32),
                   DropdownSearch<Player>(
@@ -81,7 +81,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     isFilteredOnline: true,
                     onFind: (String? filter) => fetchPlayers(filter ?? ''),
                     onChanged: (Player? value) => opponentDefender = value!,
-                    popupItemBuilder: _customPopupItemBuilder,
+                    //popupItemBuilder: _customPopupItemBuilder,
                   ),
                   const SizedBox(height: 32),
                   const Text("Score:"),
@@ -125,7 +125,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
                               ally: ally,
                               opponentAttacker: opponentAttacker,
                               opponentDefender: opponentDefender,
-                              playerScore: int.parse(playerScoreController.text),
+                              playerScore:
+                                  int.parse(playerScoreController.text),
                               opponentScore:
                                   int.parse(opponentScoreController.text),
                             );
@@ -137,7 +138,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
                               if (!context.mounted) return;
                               showDialog(
                                   context: context,
-                                  builder: (BuildContext context) => AlertDialog(
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
                                         title: const Text('Error'),
                                         content: Text(e.toString()),
                                         actions: [
@@ -165,19 +167,22 @@ class _NewMatchPageState extends State<NewMatchPage> {
   }
 }
 
-Widget _customPopupItemBuilder(
-    BuildContext context, dynamic item, bool isSelected) {
-  return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 8),
-    decoration: !isSelected
-        ? null
-        : BoxDecoration(
-            border: Border.all(color: Theme.of(context).primaryColor),
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
-          ),
-    child: ListTile(
-      title: Text(item.toString()),
-    ),
-  );
-}
+// Widget _customPopupItemBuilder(
+//     BuildContext context, dynamic item, bool isSelected) {
+//   return AnimatedPadding(
+//     duration: const Duration(milliseconds: 150),
+//     padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+//     child: Container(
+//       decoration: !isSelected
+//           ? null
+//           : BoxDecoration(
+//               border: Border.all(color: Theme.of(context).primaryColor),
+//               borderRadius: BorderRadius.circular(5),
+//               color: Colors.white,
+//             ),
+//       child: ListTile(
+//         title: Text(item.toString()),
+//       ),
+//     ),
+//   );
+// }
