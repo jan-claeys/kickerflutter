@@ -166,23 +166,3 @@ class _NewMatchPageState extends State<NewMatchPage> {
     );
   }
 }
-
-// Widget _customPopupItemBuilder(
-//     BuildContext context, dynamic item, bool isSelected) {
-//   return AnimatedPadding(
-//     duration: const Duration(milliseconds: 150),
-//     padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-//     child: Container(
-//       decoration: !isSelected
-//           ? null
-//           : BoxDecoration(
-//               border: Border.all(color: Theme.of(context).primaryColor),
-//               borderRadius: BorderRadius.circular(5),
-//               color: Colors.white,
-//             ),
-//       child: ListTile(
-//         title: Text(item.toString()),
-//       ),
-//     ),
-//   );
-// }
