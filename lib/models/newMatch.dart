@@ -4,11 +4,11 @@ enum Position { Attacker, Defender }
 
 class NewMatch{
   final Position playerPosition;
-  final Player ally;
-  final Player opponentAttacker;
-  final Player opponentDefender;
-  final int playerScore;
-  final int opponentScore;
+  final Player? ally;
+  final Player? opponentAttacker;
+  final Player? opponentDefender;
+  final int? playerScore;
+  final int? opponentScore;
 
   NewMatch({
     required this.playerPosition,
@@ -22,9 +22,9 @@ class NewMatch{
   Map<String, dynamic> toJson() {
     return {
       'playerPosition': playerPosition.name,
-      'allyId': ally.id,
-      'opponentAttackerId': opponentAttacker.id,
-      'opponentDefenderId': opponentDefender.id,
+      'allyId': ally?.id,
+      'opponentAttackerId': opponentAttacker?.id,
+      'opponentDefenderId': opponentDefender?.id,
       'playerScore': playerScore,
       'opponentScore': opponentScore,
     };

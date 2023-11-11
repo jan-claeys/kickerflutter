@@ -17,9 +17,9 @@ class NewMatchPage extends StatefulWidget {
 class _NewMatchPageState extends State<NewMatchPage> {
   final _formKey = GlobalKey<FormState>();
   Position playerPosition = Position.Attacker;
-  late Player ally;
-  late Player opponentAttacker;
-  late Player opponentDefender;
+  Player? ally;
+  Player? opponentAttacker;
+  Player? opponentDefender;
   TextEditingController playerScoreController = TextEditingController();
   TextEditingController opponentScoreController = TextEditingController();
 
@@ -61,7 +61,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     isFilteredOnline: true,
                     onFind: (String? filter) => fetchPlayers(filter ?? ''),
                     onChanged: (Player? value) => ally = value!,
-                    //popupItemBuilder: _customPopupItemBuilder,
+                    validator: (value) {
+                      if (value == null) {
+                        throw Exception('Please enter an ally');
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 32),
                   DropdownSearch<Player>(
@@ -71,7 +76,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     isFilteredOnline: true,
                     onFind: (String? filter) => fetchPlayers(filter ?? ''),
                     onChanged: (Player? value) => opponentAttacker = value!,
-                    //popupItemBuilder: _customPopupItemBuilder,
+                    validator: (value) {
+                      if (value == null) {
+                        throw Exception('Please enter opponent attacker');
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 32),
                   DropdownSearch<Player>(
@@ -81,7 +91,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     isFilteredOnline: true,
                     onFind: (String? filter) => fetchPlayers(filter ?? ''),
                     onChanged: (Player? value) => opponentDefender = value!,
-                    //popupItemBuilder: _customPopupItemBuilder,
+                    validator: (value) {
+                      if (value == null) {
+                        throw Exception('Please enter opponent defender');
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 32),
                   const Text("Score:"),
@@ -96,6 +111,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           controller: playerScoreController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              throw Exception('Please enter a score');
+                            }
+                            return null;
+                          },
                         ),
                       ),
                       const Text(" : ",
@@ -109,6 +130,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
                             FilteringTextInputFormatter.digitsOnly
                           ],
                           controller: opponentScoreController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              throw Exception('Please enter a score');
+                            }
+                            return null;
+                          },
                         ),
                       )
                     ],
@@ -119,38 +146,40 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            final NewMatch newMatch = NewMatch(
-                              playerPosition: playerPosition,
-                              ally: ally,
-                              opponentAttacker: opponentAttacker,
-                              opponentDefender: opponentDefender,
-                              playerScore:
-                                  int.parse(playerScoreController.text),
-                              opponentScore:
-                                  int.parse(opponentScoreController.text),
-                            );
-                            try {
+                          try {
+                            if (_formKey.currentState!.validate()) {
+                              final NewMatch newMatch = NewMatch(
+                                playerPosition: playerPosition,
+                                ally: ally,
+                                opponentAttacker: opponentAttacker,
+                                opponentDefender: opponentDefender,
+                                playerScore:
+                                    int.tryParse(playerScoreController.text),
+                                opponentScore:
+                                    int.tryParse(opponentScoreController.text),
+                              );
+
                               await createMatch(newMatch);
                               if (!context.mounted) return;
                               Navigator.pop(context);
-                            } catch (e) {
-                              if (!context.mounted) return;
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                        title: const Text('Error'),
-                                        content: Text(e.toString()),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, 'OK'),
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      ));
                             }
+                          } catch (e) {
+                            if (!context.mounted) return;
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                      title: const Text('Error'),
+                                      content: Text(e
+                                          .toString()
+                                          .replaceFirst("Exception:", "")),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'OK'),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ));
                           }
                         },
                         child: const Text('Submit'),
