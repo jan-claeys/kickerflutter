@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'historyPage.dart';
 import 'newMatchPage.dart';
+import 'reviewPage.dart';
 import 'rankingPage.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -33,11 +34,16 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.access_time),
               selectedIcon: Icon(Icons.access_time_filled_outlined),
               label: "History"),
+          NavigationDestination(
+              icon: Icon(Icons.reviews_outlined),
+              selectedIcon: Icon(Icons.reviews),
+              label: "Review"),
         ],
       ),
       body: <Widget>[
         const RankingPage(),
         const HistoryPage(),
+        const ReviewPage(),
       ][currentPageIndex],
       floatingActionButton: FloatingActionButton.extended(
         icon: const Icon(Icons.add),
