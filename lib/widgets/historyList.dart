@@ -74,6 +74,7 @@ class _HistoryListState extends State<HistoryList> {
           match: match,
           opponentTeam: match.opponentTeam,
           playerTeam: match.playerTeam,
+          playerPosition: widget.playerPosition,
         );
       },
     );

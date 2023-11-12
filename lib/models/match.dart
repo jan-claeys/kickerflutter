@@ -1,4 +1,3 @@
-
 class Match {
   final int id;
   final DateTime date;
@@ -6,12 +5,13 @@ class Match {
   final Team opponentTeam;
   final bool isCalculatedInRating;
 
-  Match(
-      {required this.id,
-      required this.date,
-      required this.playerTeam,
-      required this.opponentTeam,
-      required this.isCalculatedInRating});
+  Match({
+    required this.id,
+    required this.date,
+    required this.playerTeam,
+    required this.opponentTeam,
+    required this.isCalculatedInRating,
+  });
 
   factory Match.fromJson(Map<String, dynamic> json) {
     return Match(
@@ -24,11 +24,13 @@ class Match {
         attacker: PlayerSmall(
           id: json['playerTeam']['attacker']['id'],
           name: json['playerTeam']['attacker']['name'],
-          ),
+        ),
         defender: PlayerSmall(
           id: json['playerTeam']['defender']['id'],
           name: json['playerTeam']['defender']['name'],
-          )
+        ),
+        attackerRatingChange: json['playerTeam']['attackerRatingChange'],
+        defenderRatingChange: json['playerTeam']['defenderRatingChange'],
       ),
       opponentTeam: Team(
         id: json['opponentTeam']['id'],
@@ -36,11 +38,13 @@ class Match {
         attacker: PlayerSmall(
           id: json['opponentTeam']['attacker']['id'],
           name: json['opponentTeam']['attacker']['name'],
-          ),
+        ),
         defender: PlayerSmall(
           id: json['opponentTeam']['defender']['id'],
           name: json['opponentTeam']['defender']['name'],
-          ),
+        ),
+        attackerRatingChange: json['opponentTeam']['attackerRatingChange'],
+        defenderRatingChange: json['opponentTeam']['defenderRatingChange'],
       ),
     );
   }
@@ -51,8 +55,17 @@ class Team {
   final PlayerSmall attacker;
   final PlayerSmall defender;
   final int score;
+  final int attackerRatingChange;
+  final int defenderRatingChange;
 
-  Team({required this.id, required this.attacker, required this.defender, required this.score});
+  Team({
+    required this.id,
+    required this.attacker,
+    required this.defender,
+    required this.score,
+    required this.attackerRatingChange,
+    required this.defenderRatingChange,
+  });
 }
 
 class PlayerSmall {

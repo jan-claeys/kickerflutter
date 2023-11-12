@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kickerflutter/models/player.dart';
 
 import '../models/Postition.dart';
+import 'leadingCircle.dart';
 
 class PlayerTile extends StatelessWidget {
   const PlayerTile({
@@ -21,11 +22,10 @@ class PlayerTile extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: ListTile(
-          leading: CircleAvatar(
-            child: Text((index + 1).toString()),
-          ),
+          leading: LeadingCircle(number: index + 1),
           title: Text(player.name),
           trailing: Text(player.getRanking(rankingType), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
         ));
   }
 }
+
