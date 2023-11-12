@@ -17,7 +17,7 @@ class PlayerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: ListTile(
           leading: CircleAvatar(
             child: Text((index + 1).toString()),

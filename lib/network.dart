@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:kickerflutter/models/Postition.dart';
 import 'package:kickerflutter/models/newMatch.dart';
 
 import 'models/player.dart';
@@ -51,10 +52,10 @@ Future<List<Player>> fetchPlayers(String search, {int pageNumber = 1}) async {
   return players;
 }
 
-Future<List<Match>> fetchHistory(bool isConfirmed, {int pageNumber = 1}) async {
+Future<List<Match>> fetchHistory(Position position, {int pageNumber = 1}) async {
   final response = await http.get(
     Uri.parse(
-        '$baseUrl/Matches?IsConfirmed=$isConfirmed&PageNumber=$pageNumber'),
+        '$baseUrl/Matches?PlayerPosition=${position.name}&PageNumber=$pageNumber'),
     headers: {
       HttpHeaders.authorizationHeader: token,
     },

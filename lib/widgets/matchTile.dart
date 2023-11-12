@@ -7,13 +7,11 @@ class MatchTile extends StatelessWidget {
   const MatchTile({
     super.key,
     required this.match,
-    required this.isConfirmed,
     required this.opponentTeam,
     required this.playerTeam,
   });
 
   final Match match;
-  final bool isConfirmed;
   final Team opponentTeam;
   final Team playerTeam;
 

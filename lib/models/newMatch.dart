@@ -1,6 +1,5 @@
+import 'Postition.dart';
 import 'player.dart';
-
-enum Position { Attacker, Defender }
 
 class NewMatch{
   final Position playerPosition;

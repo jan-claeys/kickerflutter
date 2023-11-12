@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/Postition.dart';
 import '../widgets/historyList.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -13,15 +14,15 @@ class HistoryPage extends StatelessWidget {
         children: [
           SafeArea(
             child: TabBar(tabs:<Tab> [
-              Tab(text: "Confirmed"),
-              Tab(text: "Not confirmed"),
+              Tab(text: "Attacker"),
+              Tab(text: "Defender"),
             ],)
           ),
           Expanded(
             child: TabBarView(
               children: <Widget>[
-                HistoryList(isConfirmed: true),
-                HistoryList(isConfirmed: false),
+                HistoryList(playerPosition: Position.Attacker),
+                HistoryList(playerPosition: Position.Defender),
               ],
             ),
           ),

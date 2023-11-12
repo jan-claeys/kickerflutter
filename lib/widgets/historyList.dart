@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/Postition.dart';
 import '../network.dart';
 import '../models/match.dart';
 import 'matchTile.dart';
@@ -7,10 +8,10 @@ import 'matchTile.dart';
 class HistoryList extends StatefulWidget {
   const HistoryList({
     super.key,
-    required this.isConfirmed,
+    required this.playerPosition,
   });
 
-  final bool isConfirmed;
+  final Position playerPosition;
 
   @override
   State<HistoryList> createState() => _HistoryListState();
@@ -33,7 +34,7 @@ class _HistoryListState extends State<HistoryList> {
   void _loadMoreMatches() {
     _isLoading = true;
 
-    fetchHistory(widget.isConfirmed, pageNumber: pageNumber).then((matches) {
+    fetchHistory(widget.playerPosition, pageNumber: pageNumber).then((matches) {
       if (matches.isEmpty) {
         setState(() {
           _hasMore = false;
@@ -71,7 +72,6 @@ class _HistoryListState extends State<HistoryList> {
         final Match match = _matches[index];
         return MatchTile(
           match: match,
-          isConfirmed: widget.isConfirmed,
           opponentTeam: match.opponentTeam,
           playerTeam: match.playerTeam,
         );
