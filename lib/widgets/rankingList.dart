@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/Postition.dart';
 import '../models/player.dart';
 import '../network.dart';
 import 'playerTile.dart';
@@ -11,7 +12,7 @@ class RankingList extends StatefulWidget {
     required this.orderBy,
     });
   
-  final String orderBy;
+  final Position? orderBy;
 
   @override
   State<RankingList> createState() => _RankingListState();

@@ -1,3 +1,5 @@
+import 'Postition.dart';
+
 class Player {
   final String id;
   final String name;
@@ -13,16 +15,15 @@ class Player {
     required this.defendRating,
   });
 
-   String getRanking(rankingType) {
-    if (rankingType == "") {
+   String getRanking(Position? rankingType) {
+    if (rankingType == null) {
       return rating.toString();
-    } else if (rankingType == "AttackRating") {
+    } else if (rankingType == Position.Attacker) {
       return attackRating.toString();
-    } else if (rankingType == "DefendRating") {
+    } else if (rankingType == Position.Defender) {
       return defendRating.toString();
-    } else {
-      throw Exception("Invalid ranking type");
     }
+    return rating.toString();
   }
 
   factory Player.fromJson(Map<String, dynamic> json) {

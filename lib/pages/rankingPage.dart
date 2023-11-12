@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/Postition.dart';
 import '../widgets/rankingList.dart';
 
 class RankingPage extends StatelessWidget {
@@ -15,17 +16,17 @@ class RankingPage extends StatelessWidget {
               child: TabBar(
                 tabs: <Tab>[
                   Tab(text: "Overall"),
-                  Tab(text: "Attack"),
-                  Tab(text: "Defend"),
+                  Tab(text: "Attacker"),
+                  Tab(text: "Defender"),
                 ],
               ),
             ),
             Expanded(
               child: TabBarView(
                 children: <RankingList>[
-                  RankingList(orderBy: ""),
-                  RankingList(orderBy: "AttackRating"),
-                  RankingList(orderBy: "DefendRating"),
+                  RankingList(orderBy: null),
+                  RankingList(orderBy: Position.Attacker),
+                  RankingList(orderBy: Position.Defender),
                 ],
               ),
             ),

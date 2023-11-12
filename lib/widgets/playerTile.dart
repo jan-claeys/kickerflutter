@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:kickerflutter/models/player.dart';
 
+import '../models/Postition.dart';
+
 class PlayerTile extends StatelessWidget {
   const PlayerTile({
     super.key,
@@ -11,7 +13,7 @@ class PlayerTile extends StatelessWidget {
   });
 
   final Player player;
-  final String rankingType;
+  final Position? rankingType;
   final int index;
 
   @override
