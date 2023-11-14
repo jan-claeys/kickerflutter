@@ -79,6 +79,27 @@ Future<List<Match>> fetchHistory(Position position, {int pageNumber = 1}) async 
   return matches;
 }
 
+Future<List<Match>> fetchToReview({int pageNumber = 1}) async {
+  final response = await http.get(
+    Uri.parse(
+        '$baseUrl/Matches/toreview?PageNumber=$pageNumber'),
+    headers: {
+      HttpHeaders.authorizationHeader: token,
+    },
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to load toreview');
+  }
+
+  final List body = jsonDecode(response.body);
+
+  final List<Match> matches =
+      body.map((dynamic item) => Match.fromJson(item)).toList();
+
+  return matches;
+}
+
 Future<http.Response> createMatch(NewMatch match) async {
   final response = await http.post(
     Uri.parse('$baseUrl/Matches'),
