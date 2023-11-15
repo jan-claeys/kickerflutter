@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/position.dart';
-import '../widgets/historyList.dart';
+import '../widgets/listWidgets/historyList.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -20,7 +20,7 @@ class HistoryPage extends StatelessWidget {
           ),
           Expanded(
             child: TabBarView(
-              children: <Widget>[
+              children:[
                 HistoryList(playerPosition: Position.Attacker),
                 HistoryList(playerPosition: Position.Defender),
               ],

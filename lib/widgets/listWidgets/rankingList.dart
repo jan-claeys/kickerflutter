@@ -19,7 +19,7 @@ class RankingList extends StatelessWidget {
     return ListWidget<Player>(
       itemBuilder: (Player player, int index) =>
           PlayerTile(player: player, index: index, rankingType: playerPosition),
-      loadMoreItems: (pageNumber) => fetchRanking(playerPosition, pageNumber: pageNumber),
+      loadMoreItems: (int pageNumber) => fetchRanking(playerPosition, pageNumber: pageNumber),
     );
   }
 }
