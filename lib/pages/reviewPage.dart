@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:kickerflutter/widgets/toReviewList.dart';
+
+import '../models/position.dart';
+import '../network.dart';
+import '../widgets/listWidgets/listWidget.dart';
+import '../models/match.dart';
+import '../widgets/matchTile.dart';
 
 class ReviewPage extends StatelessWidget {
   const ReviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(
+    return DefaultTabController(
       length: 2,
       child: Column(children: [
-        SafeArea(
+        const SafeArea(
           child: TabBar(
             tabs: [
               Tab(text: 'To review'),
@@ -20,8 +25,14 @@ class ReviewPage extends StatelessWidget {
         Expanded(
           child: TabBarView(
             children: [
-              ToReviewList(),
-              Center(child: Text('Tab 2')),
+              ListWidget<Match>(
+                itemBuilder: (Match match, int index) => MatchTile(
+                  match: match,
+                  playerPosition: Position.Attacker,
+                ),
+                loadMoreItems: (int pageNumber) => fetchToReview(pageNumber: pageNumber),
+              ),
+              const Center(child: Text('Tab 2')),
             ],
           ),
         ),

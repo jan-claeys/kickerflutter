@@ -1,4 +1,4 @@
-import 'Postition.dart';
+import 'position.dart';
 import 'player.dart';
 
 class NewMatch{

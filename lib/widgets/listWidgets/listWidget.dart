@@ -28,6 +28,13 @@ class _ListWidgetState<T> extends State<ListWidget<T>> {
     _loadMoreItems();
   }
 
+  @override 
+  void setState(VoidCallback fn){
+    if(mounted){
+      super.setState(fn);
+    }
+  }
+
   void _loadMoreItems() {
     _isLoading = true;
 
