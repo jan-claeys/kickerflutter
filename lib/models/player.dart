@@ -1,4 +1,4 @@
-import 'Postition.dart';
+import 'position.dart';
 
 class Player {
   final String id;

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../models/position.dart';
-import '../network.dart';
-import '../models/match.dart';
-import 'matchTile.dart';
+class ListWidget<T> extends StatefulWidget {
+  final Widget Function(T, int index) itemBuilder;
+  final Future Function(int pageNumber) loadMoreItems;
 
-class ToReviewList extends StatefulWidget {
-  const ToReviewList({Key? key}) : super(key: key);
+  const ListWidget({
+    super.key,
+    required this.itemBuilder,
+    required this.loadMoreItems,
+  });
 
   @override
-  State<ToReviewList> createState() => _ToReviewListState();
-} 
+  State<ListWidget> createState() => _ListWidgetState<T>();
+}
 
-class _ToReviewListState extends State<ToReviewList>{
-  final List<Match> _matches = [];
+class _ListWidgetState<T> extends State<ListWidget<T>> {
+  final List<T> _items = [];
   bool _isLoading = true;
   bool _hasMore = true;
   int pageNumber = 1;
@@ -23,14 +25,14 @@ class _ToReviewListState extends State<ToReviewList>{
     super.initState();
     _isLoading = true;
     _hasMore = true;
-    _loadMoreMatches();
+    _loadMoreItems();
   }
 
-  void _loadMoreMatches() {
+  void _loadMoreItems() {
     _isLoading = true;
 
-    fetchToReview(pageNumber: pageNumber).then((matches) {
-      if (matches.isEmpty) {
+    widget.loadMoreItems(pageNumber).then((items) {
+      if (items.isEmpty) {
         setState(() {
           _hasMore = false;
           _isLoading = false;
@@ -39,7 +41,7 @@ class _ToReviewListState extends State<ToReviewList>{
         setState(() {
           _isLoading = false;
           pageNumber++;
-          _matches.addAll(matches);
+          _items.addAll(items);
         });
       }
     });
@@ -47,13 +49,13 @@ class _ToReviewListState extends State<ToReviewList>{
 
   @override
   Widget build(BuildContext context) {
-      return ListView.builder(
-      itemCount: _hasMore ? _matches.length + 1 : _matches.length,
+    return ListView.builder(
+      itemCount: _hasMore ? _items.length + 1 : _items.length,
       itemBuilder: (context, index) {
-        if (index >= _matches.length) {
+        if (index >= _items.length) {
           // Don't trigger if one async loading is already under way
           if (!_isLoading) {
-            _loadMoreMatches();
+            _loadMoreItems();
           }
           return const Center(
             child: SizedBox(
@@ -63,12 +65,7 @@ class _ToReviewListState extends State<ToReviewList>{
             ),
           );
         }
-
-        final Match match = _matches[index];
-        return MatchTile(
-          match: match,
-          playerPosition: Position.Attacker,
-        );
+        return widget.itemBuilder(_items[index], index);
       },
     );
   }

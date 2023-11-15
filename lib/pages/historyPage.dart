@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/Postition.dart';
+import '../models/position.dart';
 import '../widgets/historyList.dart';
 
 class HistoryPage extends StatelessWidget {

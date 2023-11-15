@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/Postition.dart';
+import '../models/position.dart';
 import '../network.dart';
 import '../models/match.dart';
 import 'matchTile.dart';
@@ -72,8 +72,6 @@ class _HistoryListState extends State<HistoryList> {
         final Match match = _matches[index];
         return MatchTile(
           match: match,
-          opponentTeam: match.opponentTeam,
-          playerTeam: match.playerTeam,
           playerPosition: widget.playerPosition,
         );
       },

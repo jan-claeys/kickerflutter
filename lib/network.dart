@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:kickerflutter/models/Postition.dart';
+import 'package:kickerflutter/models/position.dart';
 import 'package:kickerflutter/models/newMatch.dart';
 
 import 'models/player.dart';

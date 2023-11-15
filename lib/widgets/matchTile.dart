@@ -2,21 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kickerflutter/widgets/leadingCircle.dart';
 
-import '../models/Postition.dart';
+import '../models/position.dart';
 import '../models/match.dart';
 
 class MatchTile extends StatelessWidget {
   const MatchTile({
     super.key,
     required this.match,
-    required this.opponentTeam,
-    required this.playerTeam,
     required this.playerPosition,
   });
 
   final Match match;
-  final Team opponentTeam;
-  final Team playerTeam;
   final Position playerPosition;
 
   @override
@@ -27,9 +23,9 @@ class MatchTile extends StatelessWidget {
               ? match.playerTeam.attackerRatingChange
               : match.playerTeam.defenderRatingChange),
       title: Text(
-          "${playerTeam.attacker.name} ${playerTeam.defender.name} vs ${opponentTeam.attacker.name} ${opponentTeam.defender.name}"),
+          "${match.playerTeam.attacker.name} ${match.playerTeam.defender.name} vs ${match.opponentTeam.attacker.name} ${match.opponentTeam.defender.name}"),
       subtitle: Text(DateFormat.yMd().format(match.date)),
-      trailing: Text("${playerTeam.score} : ${opponentTeam.score}"),
+      trailing: Text("${match.playerTeam.score} : ${match.opponentTeam.score}"),
     );
   }
 }
