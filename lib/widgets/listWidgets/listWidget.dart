@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ListWidget<T> extends StatefulWidget {
-  final Widget Function(T, int index) itemBuilder;
+  final Widget Function(T, int index) tileBuilder;
   final Future Function(int pageNumber) loadMoreItems;
 
   const ListWidget({
     super.key,
-    required this.itemBuilder,
+    required this.tileBuilder,
     required this.loadMoreItems,
   });
 
@@ -72,7 +72,7 @@ class _ListWidgetState<T> extends State<ListWidget<T>> {
             ),
           );
         }
-        return widget.itemBuilder(_items[index], index);
+        return widget.tileBuilder(_items[index], index);
       },
     );
   }

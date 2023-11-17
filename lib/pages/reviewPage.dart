@@ -26,13 +26,19 @@ class ReviewPage extends StatelessWidget {
           child: TabBarView(
             children: [
               ListWidget<Match>(
-                itemBuilder: (Match match, int index) => MatchTile(
+                tileBuilder: (Match match, int index) => MatchTile(
                   match: match,
                   playerPosition: Position.Attacker,
                 ),
                 loadMoreItems: (int pageNumber) => fetchToReview(pageNumber: pageNumber),
               ),
-              const Center(child: Text('Tab 2')),
+              ListWidget<Match>(
+                tileBuilder: (Match match, int index) => MatchTile(
+                  match: match,
+                  playerPosition: Position.Attacker,
+                ),
+                loadMoreItems: (int pageNumber) => fetchUnderReview(pageNumber: pageNumber),
+              )
             ],
           ),
         ),
