@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../network.dart';
 import 'history_page.dart';
 import 'new_match_page.dart';
 import 'review_page.dart';
@@ -14,29 +15,58 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentPageIndex = 0;
+  int toReviewMatchesCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchToReviewCount().then((count) {
+      setState(() {
+        toReviewMatchesCount = count;
+      });
+    });
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) => {
-          setState(() {
-            currentPageIndex = index;
+          fetchToReviewCount().then((count) {
+            setState(() {
+              currentPageIndex = index;
+              toReviewMatchesCount = count;
+            });
           })
         },
         selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
+        destinations: <Widget>[
+          const NavigationDestination(
               icon: Icon(Icons.star_border),
               selectedIcon: Icon(Icons.star),
               label: "Ranking"),
-          NavigationDestination(
+          const NavigationDestination(
               icon: Icon(Icons.access_time),
               selectedIcon: Icon(Icons.access_time_filled_outlined),
               label: "History"),
           NavigationDestination(
-              icon: Icon(Icons.reviews_outlined),
-              selectedIcon: Icon(Icons.reviews),
+              icon: Badge(
+                isLabelVisible: toReviewMatchesCount > 0,
+                label: Text(toReviewMatchesCount.toString()),
+                child: const Icon(Icons.reviews_outlined),
+              ),
+              selectedIcon: Badge(
+                isLabelVisible: toReviewMatchesCount > 0,
+                label: Text(toReviewMatchesCount.toString()),
+                child: const Icon(Icons.reviews),
+              ),
               label: "Review"),
         ],
       ),

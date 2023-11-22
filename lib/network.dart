@@ -120,6 +120,21 @@ Future<List<Match>> fetchUnderReview({int pageNumber = 1}) async {
   return matches;
 }
 
+Future<int> fetchToReviewCount() async {
+  final response = await http.get(
+    Uri.parse('$baseUrl/Matches/toreviewcount'),
+    headers: {
+      HttpHeaders.authorizationHeader: token,
+    },
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to load toreview count');
+  }
+
+  return int.parse(response.body);
+}
+
 Future<http.Response> createMatch(NewMatch match) async {
   final response = await http.post(
     Uri.parse('$baseUrl/Matches'),
