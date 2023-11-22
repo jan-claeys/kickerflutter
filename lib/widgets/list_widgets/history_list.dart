@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kickerflutter/widgets/history_tile.dart';
+import 'package:kickerflutter/widgets/tiles/history_tile.dart';
 
 import '../../models/position.dart';
 import '../../models/match.dart';

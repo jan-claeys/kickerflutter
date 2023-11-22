@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/position.dart';
-import '../widgets/listWidgets/ranking_list.dart';
+import '../widgets/list_widgets/ranking_list.dart';
 
 class RankingPage extends StatelessWidget {
   const RankingPage({super.key});

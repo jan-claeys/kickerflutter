@@ -4,7 +4,7 @@ import '../../models/player.dart';
 import '../../models/position.dart';
 import '../../network.dart';
 import 'list_widget.dart';
-import '../player_tile.dart';
+import '../tiles/player_tile.dart';
 
 class RankingList extends StatelessWidget {
   final Position? playerPosition;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../network.dart';
-import '../widgets/listWidgets/list_widget.dart';
+import '../widgets/list_widgets/list_widget.dart';
 import '../models/match.dart';
-import '../widgets/review_tile.dart';
-import '../widgets/review_match_dialog.dart';
+import '../widgets/tiles/review_tile.dart';
+import '../widgets/dialogs/review_match_dialog.dart';
 
 class ReviewPage extends StatelessWidget {
   const ReviewPage({super.key});

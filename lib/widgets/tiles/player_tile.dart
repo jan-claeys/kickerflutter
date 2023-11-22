@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:kickerflutter/models/player.dart';
 
-import '../models/position.dart';
-import 'leading_circle.dart';
+import '../../models/position.dart';
+import '../leading_circle.dart';
 
 class PlayerTile extends StatelessWidget {
   const PlayerTile({
