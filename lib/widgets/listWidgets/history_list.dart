@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kickerflutter/widgets/historyTile.dart';
+import 'package:kickerflutter/widgets/history_tile.dart';
 
 import '../../models/position.dart';
 import '../../models/match.dart';
 import '../../network.dart';
-import 'listWidget.dart';
+import 'list_widget.dart';
 
 class HistoryList extends StatelessWidget{
   final Position playerPosition;

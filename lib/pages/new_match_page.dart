@@ -6,7 +6,7 @@ import 'package:kickerflutter/models/player.dart';
 import '../models/position.dart';
 import '../models/newMatch.dart';
 import '../network.dart';
-import '../widgets/dropdownSearch/dropdownSearch.dart';
+import '../widgets/dropdownSearch/dropdown_search.dart';
 
 class NewMatchPage extends StatefulWidget {
   const NewMatchPage({super.key});

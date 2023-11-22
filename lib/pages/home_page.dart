@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'historyPage.dart';
-import 'newMatchPage.dart';
-import 'reviewPage.dart';
-import 'rankingPage.dart';
+import 'history_page.dart';
+import 'new_match_page.dart';
+import 'review_page.dart';
+import 'ranking_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});

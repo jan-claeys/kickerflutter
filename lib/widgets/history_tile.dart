@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kickerflutter/widgets/leadingCircle.dart';
+import 'package:kickerflutter/widgets/leading_circle.dart';
 
 import '../models/position.dart';
 import '../models/match.dart';

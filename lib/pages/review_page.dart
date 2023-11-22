@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../network.dart';
-import '../widgets/listWidgets/listWidget.dart';
+import '../widgets/listWidgets/list_widget.dart';
 import '../models/match.dart';
-import '../widgets/reviewTile.dart';
+import '../widgets/review_tile.dart';
+import '../widgets/review_match_dialog.dart';
 
 class ReviewPage extends StatelessWidget {
   const ReviewPage({super.key});
@@ -29,28 +30,7 @@ class ReviewPage extends StatelessWidget {
                   match: match,
                   onTap: () => showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text("Review match"),
-                      content: Text(
-                          "${match.playerTeam.attacker.name} ${match.playerTeam.defender.name} vs ${match.opponentTeam.attacker.name} ${match.opponentTeam.defender.name}\n"
-                          "${match.playerTeam.score} : ${match.opponentTeam.score}"),
-                      actions: [
-                        TextButton(
-                          child: const Text("Deny"),
-                          onPressed: () {
-                            denyTeam(match.playerTeam.id);
-                            Navigator.of(context).pop();
-                          }
-                        ),
-                        TextButton(
-                          child: const Text("Confirm"),
-                          onPressed: () {
-                            confirmTeam(match.playerTeam.id);
-                            Navigator.of(context).pop();
-                          }
-                        ),
-                      ],
-                    ),
+                    builder: (context) => ReviewMatchDialog(match: match),
                   ),
                 ),
                 loadMoreItems: (int pageNumber) =>

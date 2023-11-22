@@ -4,8 +4,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'popupMenu.dart';
-import 'selectDialog.dart';
+import 'popup_menu.dart';
+import 'select_dialog.dart';
 
 typedef Future<List<T>> DropdownSearchOnFind<T>(String text);
 typedef String DropdownSearchItemAsString<T>(T item);
