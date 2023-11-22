@@ -136,3 +136,36 @@ Future<http.Response> createMatch(NewMatch match) async {
 
   return response;
 }
+
+Future<http.Response> confirmTeam(int teamId) async {
+  final response = await http.put(
+    Uri.parse('$baseUrl/teams/$teamId/confirm'),
+    headers: {
+      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.contentTypeHeader: "application/json"
+    },
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception(response.body);
+  }
+
+  return response;
+}
+
+Future<http.Response> denyTeam(int teamId) async {
+  final response = await http.delete(
+    Uri.parse('$baseUrl/teams/$teamId/deny'),
+    headers: {
+      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.contentTypeHeader: "application/json"
+    },
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception(response.body);
+  }
+
+  return response;
+}
+

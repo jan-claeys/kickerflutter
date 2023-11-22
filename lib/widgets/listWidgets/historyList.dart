@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kickerflutter/widgets/matchTile.dart';
+import 'package:kickerflutter/widgets/historyTile.dart';
 
 import '../../models/position.dart';
 import '../../models/match.dart';
@@ -18,7 +18,7 @@ class HistoryList extends StatelessWidget{
   Widget build(BuildContext context) {
     return ListWidget<Match>(
       tileBuilder: (Match match, int index) => 
-        MatchTile(match: match, playerPosition: playerPosition),
+        HistoryTile(match: match, playerPosition: playerPosition),
       loadMoreItems: (int pageNumber) => fetchHistory(playerPosition, pageNumber: pageNumber)
     );
   }

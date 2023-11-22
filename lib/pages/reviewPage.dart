@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../models/position.dart';
 import '../network.dart';
 import '../widgets/listWidgets/listWidget.dart';
 import '../models/match.dart';
-import '../widgets/matchTile.dart';
+import '../widgets/reviewTile.dart';
 
 class ReviewPage extends StatelessWidget {
   const ReviewPage({super.key});
@@ -26,18 +25,44 @@ class ReviewPage extends StatelessWidget {
           child: TabBarView(
             children: [
               ListWidget<Match>(
-                tileBuilder: (Match match, int index) => MatchTile(
+                tileBuilder: (Match match, int index) => ReviewTile(
                   match: match,
-                  playerPosition: Position.Attacker,
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text("Review match"),
+                      content: Text(
+                          "${match.playerTeam.attacker.name} ${match.playerTeam.defender.name} vs ${match.opponentTeam.attacker.name} ${match.opponentTeam.defender.name}\n"
+                          "${match.playerTeam.score} : ${match.opponentTeam.score}"),
+                      actions: [
+                        TextButton(
+                          child: const Text("Deny"),
+                          onPressed: () {
+                            denyTeam(match.playerTeam.id);
+                            Navigator.of(context).pop();
+                          }
+                        ),
+                        TextButton(
+                          child: const Text("Confirm"),
+                          onPressed: () {
+                            confirmTeam(match.playerTeam.id);
+                            Navigator.of(context).pop();
+                          }
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                loadMoreItems: (int pageNumber) => fetchToReview(pageNumber: pageNumber),
+                loadMoreItems: (int pageNumber) =>
+                    fetchToReview(pageNumber: pageNumber),
               ),
               ListWidget<Match>(
-                tileBuilder: (Match match, int index) => MatchTile(
+                tileBuilder: (Match match, int index) => ReviewTile(
                   match: match,
-                  playerPosition: Position.Attacker,
+                  onTap: null,
                 ),
-                loadMoreItems: (int pageNumber) => fetchUnderReview(pageNumber: pageNumber),
+                loadMoreItems: (int pageNumber) =>
+                    fetchUnderReview(pageNumber: pageNumber),
               )
             ],
           ),

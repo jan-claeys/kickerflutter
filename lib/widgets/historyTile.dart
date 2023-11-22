@@ -5,8 +5,8 @@ import 'package:kickerflutter/widgets/leadingCircle.dart';
 import '../models/position.dart';
 import '../models/match.dart';
 
-class MatchTile extends StatelessWidget {
-  const MatchTile({
+class HistoryTile extends StatelessWidget {
+  const HistoryTile({
     super.key,
     required this.match,
     required this.playerPosition,
