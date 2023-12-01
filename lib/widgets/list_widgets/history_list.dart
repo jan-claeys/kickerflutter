@@ -17,7 +17,7 @@ class HistoryList extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return ListWidget<Match>(
-      tileBuilder: (Match match, int index, Function reloadList) => 
+      tileBuilder: (Match match, int index, Function removeItem) => 
         HistoryTile(match: match, playerPosition: playerPosition),
       loadMoreItems: (int pageNumber) => fetchHistory(playerPosition, pageNumber: pageNumber)
     );

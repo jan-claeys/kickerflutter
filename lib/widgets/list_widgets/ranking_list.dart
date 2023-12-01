@@ -17,7 +17,7 @@ class RankingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListWidget<Player>(
-      tileBuilder: (Player player, int index, Function reloadList) =>
+      tileBuilder: (Player player, int index, Function removeItem) =>
           PlayerTile(player: player, index: index, rankingType: playerPosition),
       loadMoreItems: (int pageNumber) => fetchRanking(playerPosition, pageNumber: pageNumber),
     );

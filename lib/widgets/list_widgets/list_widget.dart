@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ListWidget<T> extends StatefulWidget {
-  final Widget Function(T, int index, Function reloadList) tileBuilder;
+  final Widget Function(T, int index, Function removeItem) tileBuilder;
   final Future Function(int pageNumber) loadMoreItems;
 
   const ListWidget({
@@ -35,13 +35,9 @@ class _ListWidgetState<T> extends State<ListWidget<T>> {
     }
   }
 
-  void reloadList(){
+  void removeItem(T item){
     setState(() {
-      _isLoading = true;
-      _hasMore = true;
-      pageNumber = 1;
-      _items.clear();
-      _loadMoreItems();
+      _items.remove(item);
     });
   }
 
@@ -82,7 +78,7 @@ class _ListWidgetState<T> extends State<ListWidget<T>> {
             ),
           );
         }
-        return widget.tileBuilder(_items[index], index, reloadList);
+        return widget.tileBuilder(_items[index], index, removeItem);
       },
     );
   }
