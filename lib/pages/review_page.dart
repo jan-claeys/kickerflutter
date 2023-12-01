@@ -26,18 +26,22 @@ class ReviewPage extends StatelessWidget {
           child: TabBarView(
             children: [
               ListWidget<Match>(
-                tileBuilder: (Match match, int index) => ReviewTile(
+                tileBuilder: (Match match, int index, Function reloadList) => ReviewTile(
                   match: match,
                   onTap: () => showDialog(
                     context: context,
                     builder: (context) => ReviewMatchDialog(match: match),
-                  ),
+                  ).then((value) {
+                    if(value == true){
+                      reloadList();
+                    }
+                  }),
                 ),
                 loadMoreItems: (int pageNumber) =>
                     fetchToReview(pageNumber: pageNumber),
               ),
               ListWidget<Match>(
-                tileBuilder: (Match match, int index) => ReviewTile(
+                tileBuilder: (Match match, int index, Function reloadList) => ReviewTile(
                   match: match,
                   onTap: null,
                 ),

@@ -19,19 +19,17 @@ class ReviewMatchDialog extends StatelessWidget {
           "${match.playerTeam.score} : ${match.opponentTeam.score}"),
       actions: [
         TextButton(
-          child: const Text("Deny"),
-          onPressed: () {
-            denyTeam(match.playerTeam.id);
-            Navigator.of(context).pop();
-          }
-        ),
+            child: const Text("Deny"),
+            onPressed: () {
+              denyTeam(match.playerTeam.id)
+                  .then((value) => Navigator.of(context).pop(true));
+            }),
         TextButton(
-          child: const Text("Confirm"),
-          onPressed: () {
-            confirmTeam(match.playerTeam.id);
-            Navigator.of(context).pop();
-          }
-        ),
+            child: const Text("Confirm"),
+            onPressed: () {
+              confirmTeam(match.playerTeam.id)
+                  .then((value) => Navigator.of(context).pop(true));
+            }),
       ],
     );
   }
