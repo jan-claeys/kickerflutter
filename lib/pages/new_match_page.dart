@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:kickerflutter/models/player.dart';
+import 'package:kickerflutter/widgets/dialogs/error_dialog.dart';
 
 import '../models/position.dart';
 import '../models/newMatch.dart';
@@ -164,23 +165,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
                               if (!context.mounted) return;
                               Navigator.pop(context);
                             }
-                          } catch (e) {
+                          } on Exception catch (e) {
                             if (!context.mounted) return;
                             showDialog(
                                 context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                      title: const Text('Error'),
-                                      content: Text(e
-                                          .toString()
-                                          .replaceFirst("Exception:", "")),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context, 'OK'),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    ));
+                                builder: (BuildContext context) =>
+                                    ErrorDialog(exeption: e));
                           }
                         },
                         child: const Text('Submit'),

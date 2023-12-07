@@ -3,13 +3,32 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:kickerflutter/models/position.dart';
 import 'package:kickerflutter/models/newMatch.dart';
+import 'package:kickerflutter/session.dart';
 
 import 'models/player.dart';
 import 'models/match.dart';
 
-const String token =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImI5NWZiZjNmLTMwNDAtNDUzOC05MjYxLTk4Y2M4ZDhjN2ZjOCIsImV4cCI6MTczMDM4MDI3NSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzE1Ni8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo3MTU2LyJ9.B-vYDvHA35iQLYNmTkzdSviXOvXx6IHT2ryKhCWRT9Y";
 const String baseUrl = "http://localhost:5277";
+
+Future fetchToken(String name, String password) async {
+  final response = await http.post(
+    Uri.parse('$baseUrl/security/login'),
+    headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+    },
+    body: jsonEncode({
+      'name': name,
+      'password': password,
+    }),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to login');
+  }
+
+  final body = jsonDecode(response.body);
+  return body['token'];
+}
 
 Future<List<Player>> fetchRanking(Position? orderBy,
     {int pageNumber = 1}) async {
@@ -20,9 +39,9 @@ Future<List<Player>> fetchRanking(Position? orderBy,
   }
 
   final response = await http.get(
-    Uri.parse('$url'),
+    Uri.parse(url),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
     },
   );
 
@@ -43,7 +62,7 @@ Future<List<Player>> fetchPlayers(String search, {int pageNumber = 1}) async {
     Uri.parse(
         '$baseUrl/Players?Search=$search&PageNumber=$pageNumber&PageSize=6'),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
     },
   );
 
@@ -64,7 +83,7 @@ Future<List<Match>> fetchHistory(Position position,
     Uri.parse(
         '$baseUrl/Matches?PlayerPosition=${position.name}&PageNumber=$pageNumber'),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
     },
   );
 
@@ -84,7 +103,7 @@ Future<List<Match>> fetchToReview({int pageNumber = 1}) async {
   final response = await http.get(
     Uri.parse('$baseUrl/Matches/toreview?PageNumber=$pageNumber'),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
     },
   );
 
@@ -104,7 +123,7 @@ Future<List<Match>> fetchUnderReview({int pageNumber = 1}) async {
   final response = await http.get(
     Uri.parse('$baseUrl/Matches/underreview?PageNumber=$pageNumber'),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
     },
   );
 
@@ -124,7 +143,7 @@ Future<int> fetchToReviewCount() async {
   final response = await http.get(
     Uri.parse('$baseUrl/Matches/toreviewcount'),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
     },
   );
 
@@ -139,7 +158,7 @@ Future<http.Response> createMatch(NewMatch match) async {
   final response = await http.post(
     Uri.parse('$baseUrl/Matches'),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
       HttpHeaders.contentTypeHeader: "application/json",
     },
     body: jsonEncode(match.toJson()),
@@ -156,7 +175,7 @@ Future<http.Response> confirmTeam(int teamId) async {
   final response = await http.put(
     Uri.parse('$baseUrl/teams/$teamId/confirm'),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
       HttpHeaders.contentTypeHeader: "application/json"
     },
   );
@@ -172,7 +191,7 @@ Future<http.Response> denyTeam(int teamId) async {
   final response = await http.delete(
     Uri.parse('$baseUrl/teams/$teamId/deny'),
     headers: {
-      HttpHeaders.authorizationHeader: token,
+      HttpHeaders.authorizationHeader: await Session().readToken(),
       HttpHeaders.contentTypeHeader: "application/json"
     },
   );
@@ -183,4 +202,3 @@ Future<http.Response> denyTeam(int teamId) async {
 
   return response;
 }
-
