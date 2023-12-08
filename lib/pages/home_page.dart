@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../network.dart';
+import '../widgets/create_match_floating_action_button.dart';
 import 'history_page.dart';
 import 'new_match_page.dart';
 import 'review_page.dart';
@@ -17,8 +19,27 @@ class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
   int toReviewMatchesCount = 0;
 
+  bool extendedFloatingActionButton = true;
+
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
+    scrollController.addListener(() {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse && extendedFloatingActionButton) {
+        setState(() {
+          extendedFloatingActionButton = false;
+        });
+      }
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward && !extendedFloatingActionButton) {
+        setState(() {
+          extendedFloatingActionButton = true;
+        });
+      }
+    });
+
     super.initState();
     fetchToReviewCount().then((count) {
       setState(() {
@@ -37,28 +58,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-       actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.account_circle_outlined),
-            onPressed: () {
-              //Navigator.pushNamed(context, "/settings");
-            },
-          ),
-       ]
-      ),
+      appBar: AppBar(actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.account_circle_outlined),
+          onPressed: () {
+            //Navigator.pushNamed(context, "/settings");
+          },
+        ),
+      ]),
       body: <Widget>[
-        const RankingPage(),
-        const HistoryPage(),
-        const ReviewPage(),
+        RankingPage(scrollController: scrollController,),
+        HistoryPage(scrollController: scrollController,),
+        ReviewPage(
+          scrollController: scrollController,
+        ),
       ][currentPageIndex],
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const NewMatchPage()));
-        },
-        label: const Text("New match"),
+      floatingActionButton: CreateMatchFloatingActionButton(
+        extended: extendedFloatingActionButton,
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) => {

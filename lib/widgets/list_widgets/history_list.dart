@@ -8,10 +8,12 @@ import 'list_widget.dart';
 
 class HistoryList extends StatelessWidget{
   final Position playerPosition;
+  final ScrollController scrollController;
 
   const HistoryList({
     super.key,
-    required this.playerPosition
+    required this.playerPosition,
+    required this.scrollController
   });
 
   @override
@@ -19,7 +21,8 @@ class HistoryList extends StatelessWidget{
     return ListWidget<Match>(
       tileBuilder: (Match match, int index, Function removeItem) => 
         HistoryTile(match: match, playerPosition: playerPosition),
-      loadMoreItems: (int pageNumber) => fetchHistory(playerPosition, pageNumber: pageNumber)
+      loadMoreItems: (int pageNumber) => fetchHistory(playerPosition, pageNumber: pageNumber),
+      scrollController: scrollController,
     );
   }
 }

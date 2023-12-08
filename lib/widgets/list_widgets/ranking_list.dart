@@ -8,10 +8,12 @@ import '../tiles/player_tile.dart';
 
 class RankingList extends StatelessWidget {
   final Position? playerPosition;
+  final ScrollController scrollController;
 
   const RankingList({
     super.key,
     required this.playerPosition,
+    required this.scrollController,
   });
 
   @override
@@ -20,6 +22,7 @@ class RankingList extends StatelessWidget {
       tileBuilder: (Player player, int index, Function removeItem) =>
           PlayerTile(player: player, index: index, rankingType: playerPosition),
       loadMoreItems: (int pageNumber) => fetchRanking(playerPosition, pageNumber: pageNumber),
+      scrollController: scrollController,
     );
   }
 }

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class ListWidget<T> extends StatefulWidget {
   final Widget Function(T, int index, Function removeItem) tileBuilder;
   final Future Function(int pageNumber) loadMoreItems;
+  final ScrollController scrollController;
 
   const ListWidget({
     super.key,
     required this.tileBuilder,
     required this.loadMoreItems,
+    required this.scrollController,
   });
 
   @override
@@ -28,14 +30,14 @@ class _ListWidgetState<T> extends State<ListWidget<T>> {
     _loadMoreItems();
   }
 
-  @override 
-  void setState(VoidCallback fn){
-    if(mounted){
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
       super.setState(fn);
     }
   }
 
-  void removeItem(T item){
+  void removeItem(T item) {
     setState(() {
       _items.remove(item);
     });
@@ -63,6 +65,7 @@ class _ListWidgetState<T> extends State<ListWidget<T>> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      controller: widget.scrollController,
       itemCount: _hasMore ? _items.length + 1 : _items.length,
       itemBuilder: (context, index) {
         if (index >= _items.length) {

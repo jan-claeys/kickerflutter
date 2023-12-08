@@ -7,7 +7,9 @@ import '../widgets/tiles/review_tile.dart';
 import '../widgets/dialogs/review_match_dialog.dart';
 
 class ReviewPage extends StatelessWidget {
-  const ReviewPage({super.key});
+  final scrollController;
+
+  const ReviewPage({super.key, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -26,27 +28,31 @@ class ReviewPage extends StatelessWidget {
           child: TabBarView(
             children: [
               ListWidget<Match>(
-                tileBuilder: (Match match, int index, Function removeItem) => ReviewTile(
+                tileBuilder: (Match match, int index, Function removeItem) =>
+                    ReviewTile(
                   match: match,
                   onTap: () => showDialog(
                     context: context,
                     builder: (context) => ReviewMatchDialog(match: match),
                   ).then((value) {
-                    if(value == true){
+                    if (value == true) {
                       removeItem(match);
                     }
                   }),
                 ),
                 loadMoreItems: (int pageNumber) =>
                     fetchToReview(pageNumber: pageNumber),
+                scrollController: scrollController,
               ),
               ListWidget<Match>(
-                tileBuilder: (Match match, int index, Function removeItem) => ReviewTile(
+                tileBuilder: (Match match, int index, Function removeItem) =>
+                    ReviewTile(
                   match: match,
                   onTap: null,
                 ),
                 loadMoreItems: (int pageNumber) =>
                     fetchUnderReview(pageNumber: pageNumber),
+                scrollController: scrollController,
               )
             ],
           ),
