@@ -37,6 +37,29 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+       actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.account_circle_outlined),
+            onPressed: () {
+              //Navigator.pushNamed(context, "/settings");
+            },
+          ),
+       ]
+      ),
+      body: <Widget>[
+        const RankingPage(),
+        const HistoryPage(),
+        const ReviewPage(),
+      ][currentPageIndex],
+      floatingActionButton: FloatingActionButton.extended(
+        icon: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const NewMatchPage()));
+        },
+        label: const Text("New match"),
+      ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) => {
           fetchToReviewCount().then((count) {
@@ -69,19 +92,6 @@ class _HomePageState extends State<HomePage> {
               ),
               label: "Review"),
         ],
-      ),
-      body: <Widget>[
-        const RankingPage(),
-        const HistoryPage(),
-        const ReviewPage(),
-      ][currentPageIndex],
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const NewMatchPage()));
-        },
-        label: const Text("New match"),
       ),
     );
   }
