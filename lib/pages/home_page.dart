@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import '../network.dart';
 import '../widgets/create_match_floating_action_button.dart';
 import 'history_page.dart';
-import 'new_match_page.dart';
 import 'review_page.dart';
 import 'ranking_page.dart';
 
@@ -19,28 +18,37 @@ class _HomePageState extends State<HomePage> {
   int currentPageIndex = 0;
   int toReviewMatchesCount = 0;
 
-  bool extendedFloatingActionButton = true;
+  bool showFullLayout = true;
 
+  final int thresshold = 50;
+  double? startOffset;
   ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
-    scrollController.addListener(() {
-      if (scrollController.position.userScrollDirection ==
-          ScrollDirection.reverse && extendedFloatingActionButton) {
-        setState(() {
-          extendedFloatingActionButton = false;
-        });
-      }
-      if (scrollController.position.userScrollDirection ==
-          ScrollDirection.forward && !extendedFloatingActionButton) {
-        setState(() {
-          extendedFloatingActionButton = true;
-        });
-      }
-    });
-
     super.initState();
+
+  scrollController.addListener(() {
+    startOffset ??= scrollController.offset;
+
+    if (startOffset != null && 
+        (scrollController.offset - startOffset!).abs() > thresshold) {
+      if (showFullLayout && scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        setState(() {
+          showFullLayout = false;
+        });
+      }
+      if (!showFullLayout && scrollController.position.userScrollDirection == ScrollDirection.forward
+          ) {
+        setState(() {
+          showFullLayout = true;
+        });
+      }
+
+      startOffset = null;
+    }
+  });
+
     fetchToReviewCount().then((count) {
       setState(() {
         toReviewMatchesCount = count;
@@ -67,14 +75,18 @@ class _HomePageState extends State<HomePage> {
         ),
       ]),
       body: <Widget>[
-        RankingPage(scrollController: scrollController,),
-        HistoryPage(scrollController: scrollController,),
+        RankingPage(
+          scrollController: scrollController,
+        ),
+        HistoryPage(
+          scrollController: scrollController,
+        ),
         ReviewPage(
           scrollController: scrollController,
         ),
       ][currentPageIndex],
       floatingActionButton: CreateMatchFloatingActionButton(
-        extended: extendedFloatingActionButton,
+        extended: showFullLayout,
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) => {

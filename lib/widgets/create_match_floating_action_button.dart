@@ -34,13 +34,5 @@ class CreateMatchFloatingActionButton extends StatelessWidget {
             : const Icon(Icons.add),
       ),
     );
-    //   }
-    //   return FloatingActionButton(
-    //     child: const Icon(Icons.add),
-    //     onPressed: () {
-    //       Navigator.push(context,
-    //           MaterialPageRoute(builder: (context) => const NewMatchPage()));
-    //     },
-    //   );
   }
 }
