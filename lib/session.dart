@@ -35,7 +35,7 @@ class Session {
     }
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString('token') != null ? "Bearer ${prefs.getString('token')}" : null;
+    _token = prefs.getString('token');
     return _token ?? "";
   }
 }

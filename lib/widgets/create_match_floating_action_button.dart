@@ -11,9 +11,7 @@ class CreateMatchFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //if (extended) {
     return FloatingActionButton.extended(
-      //icon: const Icon(Icons.add),
       onPressed: () {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NewMatchPage()));

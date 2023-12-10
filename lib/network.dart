@@ -41,7 +41,7 @@ Future<List<Player>> fetchRanking(Position? orderBy,
   final response = await http.get(
     Uri.parse(url),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
     },
   );
 
@@ -62,7 +62,7 @@ Future<List<Player>> fetchPlayers(String search, {int pageNumber = 1}) async {
     Uri.parse(
         '$baseUrl/Players?Search=$search&PageNumber=$pageNumber&PageSize=6'),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
     },
   );
 
@@ -83,7 +83,7 @@ Future<List<Match>> fetchHistory(Position position,
     Uri.parse(
         '$baseUrl/Matches?PlayerPosition=${position.name}&PageNumber=$pageNumber'),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
     },
   );
 
@@ -103,7 +103,7 @@ Future<List<Match>> fetchToReview({int pageNumber = 1}) async {
   final response = await http.get(
     Uri.parse('$baseUrl/Matches/toreview?PageNumber=$pageNumber'),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
     },
   );
 
@@ -123,7 +123,7 @@ Future<List<Match>> fetchUnderReview({int pageNumber = 1}) async {
   final response = await http.get(
     Uri.parse('$baseUrl/Matches/underreview?PageNumber=$pageNumber'),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
     },
   );
 
@@ -143,7 +143,7 @@ Future<int> fetchToReviewCount() async {
   final response = await http.get(
     Uri.parse('$baseUrl/Matches/toreviewcount'),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
     },
   );
 
@@ -158,7 +158,7 @@ Future<http.Response> createMatch(NewMatch match) async {
   final response = await http.post(
     Uri.parse('$baseUrl/Matches'),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
       HttpHeaders.contentTypeHeader: "application/json",
     },
     body: jsonEncode(match.toJson()),
@@ -175,7 +175,7 @@ Future<http.Response> confirmTeam(int teamId) async {
   final response = await http.put(
     Uri.parse('$baseUrl/teams/$teamId/confirm'),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
       HttpHeaders.contentTypeHeader: "application/json"
     },
   );
@@ -191,7 +191,7 @@ Future<http.Response> denyTeam(int teamId) async {
   final response = await http.delete(
     Uri.parse('$baseUrl/teams/$teamId/deny'),
     headers: {
-      HttpHeaders.authorizationHeader: await Session().readToken(),
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
       HttpHeaders.contentTypeHeader: "application/json"
     },
   );
