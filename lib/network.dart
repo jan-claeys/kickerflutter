@@ -202,3 +202,20 @@ Future<http.Response> denyTeam(int teamId) async {
 
   return response;
 }
+
+Future<Player> fetchCurrentPlayer() async {
+  final response = await http.get(
+    Uri.parse('$baseUrl/Players/current'),
+    headers: {
+      HttpHeaders.authorizationHeader: "Bearer ${await Session().readToken()}",
+    },
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to load player');
+  }
+
+  final body = jsonDecode(response.body);
+
+  return Player.fromJson(body);
+}

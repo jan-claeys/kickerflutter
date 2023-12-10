@@ -29,34 +29,37 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-  scrollController.addListener(() {
-    startOffset ??= scrollController.offset;
+    scrollController.addListener(() {
+      startOffset ??= scrollController.offset;
 
-    //check if the user is at the top of the list
-    if(!showFullLayout && scrollController.offset == 0) {
-      setState(() {
-        showFullLayout = true;
-      });
-    }
-
-    //check if the user is scrolling up or down by comparing the current offset with the previous offset
-    if (startOffset != null && 
-        (scrollController.offset - startOffset!).abs() > thresshold) {
-      if (showFullLayout && scrollController.position.userScrollDirection == ScrollDirection.reverse) {
-        setState(() {
-          showFullLayout = false;
-        });
-      }
-      if (!showFullLayout && scrollController.position.userScrollDirection == ScrollDirection.forward
-          ) {
+      //check if the user is at the top of the list
+      if (!showFullLayout && scrollController.offset == 0) {
         setState(() {
           showFullLayout = true;
         });
       }
 
-      startOffset = null;
-    }
-  });
+      //check if the user is scrolling up or down by comparing the current offset with the previous offset
+      if (startOffset != null &&
+          (scrollController.offset - startOffset!).abs() > thresshold) {
+        if (showFullLayout &&
+            scrollController.position.userScrollDirection ==
+                ScrollDirection.reverse) {
+          setState(() {
+            showFullLayout = false;
+          });
+        }
+        if (!showFullLayout &&
+            scrollController.position.userScrollDirection ==
+                ScrollDirection.forward) {
+          setState(() {
+            showFullLayout = true;
+          });
+        }
+
+        startOffset = null;
+      }
+    });
 
     fetchToReviewCount().then((count) {
       setState(() {
@@ -75,19 +78,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  PreferredSize(
+      appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
         child: SafeArea(
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             height: showFullLayout ? 50 : 0,
-            child: AppBar(
-              actions: <Widget>[
+            child: AppBar(actions: <Widget>[
               IconButton(
                 icon: const Icon(Icons.account_circle_outlined),
                 onPressed: () {
-                  Navigator.push(context,
-                   MaterialPageRoute(builder: (context) => const ProfilePage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfilePage()));
                 },
               ),
             ]),

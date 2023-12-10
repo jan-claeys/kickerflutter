@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kickerflutter/network.dart';
+
+import '../models/player.dart';
+import '../session.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -13,9 +17,14 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'userName',
-              style: TextStyle(fontSize: 24),
+            FutureBuilder<Player?>(
+              future: fetchCurrentPlayer(),
+              builder: (BuildContext context, AsyncSnapshot<Player?>snapshot) => snapshot.hasData
+                  ? Text(
+                      snapshot.data!.name,
+                      style: const TextStyle(fontSize: 24),
+                    )
+                  : const CircularProgressIndicator()
             ),
             const SizedBox(height: 16),
             ElevatedButton(
