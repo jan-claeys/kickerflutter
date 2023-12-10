@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:kickerflutter/pages/profile_page.dart';
 
 import '../network.dart';
 import '../widgets/create_match_floating_action_button.dart';
@@ -85,7 +86,8 @@ class _HomePageState extends State<HomePage> {
               IconButton(
                 icon: const Icon(Icons.account_circle_outlined),
                 onPressed: () {
-                  //Navigator.pushNamed(context, "/settings");
+                  Navigator.push(context,
+                   MaterialPageRoute(builder: (context) => const ProfilePage()));
                 },
               ),
             ]),
