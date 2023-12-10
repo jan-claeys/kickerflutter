@@ -31,6 +31,14 @@ class _HomePageState extends State<HomePage> {
   scrollController.addListener(() {
     startOffset ??= scrollController.offset;
 
+    //check if the user is at the top of the list
+    if(!showFullLayout && scrollController.offset == 0) {
+      setState(() {
+        showFullLayout = true;
+      });
+    }
+
+    //check if the user is scrolling up or down by comparing the current offset with the previous offset
     if (startOffset != null && 
         (scrollController.offset - startOffset!).abs() > thresshold) {
       if (showFullLayout && scrollController.position.userScrollDirection == ScrollDirection.reverse) {
