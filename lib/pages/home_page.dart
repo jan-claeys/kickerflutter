@@ -63,7 +63,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,38 +98,42 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: CreateMatchFloatingActionButton(
         extended: showFullLayout,
       ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) => {
-          fetchToReviewCount().then((count) {
-            setState(() {
-              currentPageIndex = index;
-              toReviewMatchesCount = count;
-            });
-          })
-        },
-        selectedIndex: currentPageIndex,
-        destinations: <Widget>[
-          const NavigationDestination(
-              icon: Icon(Icons.star_border),
-              selectedIcon: Icon(Icons.star),
-              label: "Ranking"),
-          const NavigationDestination(
-              icon: Icon(Icons.access_time),
-              selectedIcon: Icon(Icons.access_time_filled_outlined),
-              label: "History"),
-          NavigationDestination(
-              icon: Badge(
-                isLabelVisible: toReviewMatchesCount > 0,
-                label: Text(toReviewMatchesCount.toString()),
-                child: const Icon(Icons.reviews_outlined),
-              ),
-              selectedIcon: Badge(
-                isLabelVisible: toReviewMatchesCount > 0,
-                label: Text(toReviewMatchesCount.toString()),
-                child: const Icon(Icons.reviews),
-              ),
-              label: "Review"),
-        ],
+      bottomNavigationBar: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        height: showFullLayout ? 75 : 0,
+        child: NavigationBar(
+          onDestinationSelected: (int index) => {
+            fetchToReviewCount().then((count) {
+              setState(() {
+                currentPageIndex = index;
+                toReviewMatchesCount = count;
+              });
+            })
+          },
+          selectedIndex: currentPageIndex,
+          destinations: <Widget>[
+            const NavigationDestination(
+                icon: Icon(Icons.star_border),
+                selectedIcon: Icon(Icons.star),
+                label: "Ranking"),
+            const NavigationDestination(
+                icon: Icon(Icons.access_time),
+                selectedIcon: Icon(Icons.access_time_filled_outlined),
+                label: "History"),
+            NavigationDestination(
+                icon: Badge(
+                  isLabelVisible: showFullLayout && toReviewMatchesCount > 0,
+                  label: Text(toReviewMatchesCount.toString()),
+                  child: const Icon(Icons.reviews_outlined),
+                ),
+                selectedIcon: Badge(
+                  isLabelVisible: toReviewMatchesCount > 0,
+                  label: Text(toReviewMatchesCount.toString()),
+                  child: const Icon(Icons.reviews),
+                ),
+                label: "Review"),
+          ],
+        ),
       ),
     );
   }
