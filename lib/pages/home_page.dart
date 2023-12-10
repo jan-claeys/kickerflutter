@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   bool showFullLayout = true;
 
-  final int thresshold = 50;
+  final int thresshold = 75;
   double? startOffset;
   ScrollController scrollController = ScrollController();
 
@@ -63,17 +63,28 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.account_circle_outlined),
-          onPressed: () {
-            //Navigator.pushNamed(context, "/settings");
-          },
+      appBar:  PreferredSize(
+        preferredSize: const Size.fromHeight(50),
+        child: SafeArea(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            height: showFullLayout ? 50 : 0,
+            child: AppBar(
+              actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.account_circle_outlined),
+                onPressed: () {
+                  //Navigator.pushNamed(context, "/settings");
+                },
+              ),
+            ]),
+          ),
         ),
-      ]),
+      ),
       body: <Widget>[
         RankingPage(
           scrollController: scrollController,
