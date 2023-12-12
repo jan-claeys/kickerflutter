@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kickerflutter/pages/home_page.dart';
+import 'package:kickerflutter/pages/register_page.dart';
 import 'package:kickerflutter/session.dart';
 
 import '../widgets/dialogs/error_dialog.dart';
@@ -68,7 +69,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
-                    // TODO: Implement sign up logic
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterPage()));
                   },
                   child: const Text('Sign Up'),
                 ),
