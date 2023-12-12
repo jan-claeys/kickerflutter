@@ -16,8 +16,7 @@ class ErrorDialog extends StatelessWidget{
       actions: [
         TextButton(
           child: const Text("OK"),
-          //FIXME: gives error when pressing ok button in error dialog on login page if password is wrong
-          onPressed: () => Navigator.of(context).pop(true),
+          onPressed: () => Navigator.of(context).pop(),
         )
       ],
     );
