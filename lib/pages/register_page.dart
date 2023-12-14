@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:kickerflutter/pages/login_page.dart';
 
-class RegisterPage extends StatelessWidget {
+import '../network.dart';
+import '../session.dart';
+import '../widgets/dialogs/error_dialog.dart';
+import 'home_page.dart';
+
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
+
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordConfirmationController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +30,54 @@ class RegisterPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextFormField(
+              decoration: const InputDecoration(
                 labelText: 'Name',
               ),
+              controller: nameController,
             ),
             const SizedBox(height: 16.0),
-            const TextField(
-              decoration: InputDecoration(
+            TextFormField(
+              decoration: const InputDecoration(
                 labelText: 'Password',
               ),
+              controller: passwordController,
+              obscureText: true,
+            ),
+            const SizedBox(height: 16.0),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Password confirmation',
+              ),
+              controller: passwordConfirmationController,
               obscureText: true,
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // TODO: Implement registration logic
+                if (passwordController.text !=
+                    passwordConfirmationController.text) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ErrorDialog(
+                          exeption: Exception("Passwords do not match"));
+                    },
+                  );
+                  return;
+                }
+
+                register(nameController.text, passwordController.text)
+                    .then((value) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const LoginPage()));
+                }).onError((Exception exception, stackTrace) => showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            ErrorDialog(exeption: exception)));
               },
               child: const Text('Register'),
             ),

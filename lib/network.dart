@@ -10,6 +10,27 @@ import 'models/match.dart';
 
 const String baseUrl = "http://localhost:5277";
 
+Future register(String name, String password) async {
+  final response = await http.post(
+    Uri.parse('$baseUrl/security/register'),
+    headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+    },
+    body: jsonEncode({
+      'name': name,
+      'password': password,
+    }),
+  );
+
+  if (response.statusCode == 400) {
+    List<dynamic> errors = jsonDecode(response.body);
+    throw Exception(errors[0]['description']);
+  }
+  else if(response.statusCode != 200) {
+    throw Exception('Failed to register');
+  }
+}
+
 Future fetchToken(String name, String password) async {
   final response = await http.post(
     Uri.parse('$baseUrl/security/login'),
@@ -22,7 +43,10 @@ Future fetchToken(String name, String password) async {
     }),
   );
 
-  if (response.statusCode != 200) {
+  if(response.statusCode == 401){
+    throw Exception(response.body);
+  }
+  else if(response.statusCode != 200) {
     throw Exception('Failed to login');
   }
 
@@ -128,7 +152,7 @@ Future<List<Match>> fetchUnderReview({int pageNumber = 1}) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to load toreview');
+    throw Exception('Failed to load underreview');
   }
 
   final List body = jsonDecode(response.body);
@@ -163,9 +187,11 @@ Future<http.Response> createMatch(NewMatch match) async {
     },
     body: jsonEncode(match.toJson()),
   );
-
-  if (response.statusCode != 200) {
+  if(response.statusCode == 400){
     throw Exception(response.body);
+  }
+  else if (response.statusCode != 200) {
+    throw Exception('Failed to create match');
   }
 
   return response;
@@ -181,7 +207,7 @@ Future<http.Response> confirmTeam(int teamId) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception(response.body);
+    throw Exception("Failed to confirm team");
   }
 
   return response;
@@ -197,7 +223,7 @@ Future<http.Response> denyTeam(int teamId) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception(response.body);
+    throw Exception("Failed to deny team");
   }
 
   return response;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ErrorDialog extends StatelessWidget{
   const ErrorDialog({
     super.key,
-    required this.exeption
+    required this.exeption,
   });
 
   final Exception exeption;

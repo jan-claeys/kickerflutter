@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:kickerflutter/pages/profile_page.dart';
 
 import '../network.dart';
 import '../widgets/create_match_floating_action_button.dart';
 import 'history_page.dart';
 import 'review_page.dart';
 import 'ranking_page.dart';
+import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
