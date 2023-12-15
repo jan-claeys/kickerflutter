@@ -7,6 +7,7 @@ import 'package:kickerflutter/widgets/dialogs/error_dialog.dart';
 import '../models/position.dart';
 import '../models/newMatch.dart';
 import '../network.dart';
+import '../utils/kicker_exception.dart';
 import '../widgets/dropdown_search/dropdown_search.dart';
 
 class NewMatchPage extends StatefulWidget {
@@ -65,7 +66,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     onChanged: (Player? value) => ally = value!,
                     validator: (value) {
                       if (value == null) {
-                        throw Exception('Please enter an ally');
+                        throw KickerException('Please enter an ally');
                       }
                       return null;
                     },
@@ -80,7 +81,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     onChanged: (Player? value) => opponentAttacker = value!,
                     validator: (value) {
                       if (value == null) {
-                        throw Exception('Please enter opponent attacker');
+                        throw KickerException('Please enter opponent attacker');
                       }
                       return null;
                     },
@@ -95,7 +96,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     onChanged: (Player? value) => opponentDefender = value!,
                     validator: (value) {
                       if (value == null) {
-                        throw Exception('Please enter opponent defender');
+                        throw KickerException('Please enter opponent defender');
                       }
                       return null;
                     },
@@ -115,7 +116,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                           controller: playerScoreController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              throw Exception('Please enter a score');
+                              throw KickerException('Please enter a score');
                             }
                             return null;
                           },
@@ -134,7 +135,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                           controller: opponentScoreController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              throw Exception('Please enter a score');
+                              throw KickerException('Please enter a score');
                             }
                             return null;
                           },
@@ -165,12 +166,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
                               if (!context.mounted) return;
                               Navigator.pop(context);
                             }
-                          } on Exception catch (e) {
+                          } on KickerException catch (e) {
                             if (!context.mounted) return;
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    ErrorDialog(exeption: e));
+                                    ErrorDialog(exception: e));
                           }
                         },
                         child: const Text('Submit'),

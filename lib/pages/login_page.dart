@@ -3,6 +3,7 @@ import 'package:kickerflutter/pages/home_page.dart';
 import 'package:kickerflutter/pages/register_page.dart';
 import 'package:kickerflutter/session.dart';
 
+import '../utils/kicker_exception.dart';
 import '../widgets/dialogs/error_dialog.dart';
 
 class LoginPage extends StatefulWidget {
@@ -59,10 +60,10 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(
                               builder: (BuildContext context) =>
                                   const HomePage()));
-                    }).onError((Exception exception, stackTrace) => showDialog(
+                    }).onError((KickerException exception, stackTrace) => showDialog(
                             context: context,
                             builder: (BuildContext context) =>
-                                ErrorDialog(exeption: exception)));
+                                ErrorDialog(exception: exception)));
                   },
                   child: const Text('Login'),
                 ),

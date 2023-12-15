@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../../utils/kicker_exception.dart';
+
 class ErrorDialog extends StatelessWidget{
   const ErrorDialog({
     super.key,
-    required this.exeption,
+    required this.exception,
   });
 
-  final Exception exeption;
+  final KickerException exception;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text("Error"),
-      content: Text(exeption.toString().replaceFirst("Exception:", "")),
+      content: Text(exception.message),
       actions: [
         TextButton(
           child: const Text("OK"),

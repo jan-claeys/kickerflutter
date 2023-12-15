@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kickerflutter/pages/login_page.dart';
+import 'package:kickerflutter/utils/kicker_exception.dart';
 
 import '../network.dart';
 import '../session.dart';
@@ -61,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     context: context,
                     builder: (BuildContext context) {
                       return ErrorDialog(
-                          exeption: Exception("Passwords do not match"));
+                          exception: KickerException("Passwords do not match"));
                     },
                   );
                   return;
@@ -74,10 +75,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
                               const LoginPage()));
-                }).onError((Exception exception, stackTrace) => showDialog(
+                }).onError((KickerException exception, stackTrace) => showDialog(
                         context: context,
                         builder: (BuildContext context) =>
-                            ErrorDialog(exeption: exception)));
+                            ErrorDialog(exception: exception)));
               },
               child: const Text('Register'),
             ),

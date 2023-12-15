@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:kickerflutter/models/position.dart';
 import 'package:kickerflutter/models/newMatch.dart';
 import 'package:kickerflutter/session.dart';
+import 'package:kickerflutter/utils/kicker_exception.dart';
 
 import 'models/player.dart';
 import 'models/match.dart';
@@ -24,10 +25,10 @@ Future register(String name, String password) async {
 
   if (response.statusCode == 400) {
     List<dynamic> errors = jsonDecode(response.body);
-    throw Exception(errors[0]['description']);
+    throw KickerException(errors[0]['description']);
   }
   else if(response.statusCode != 200) {
-    throw Exception('Failed to register');
+    throw KickerException('Failed to register');
   }
 }
 
@@ -44,10 +45,10 @@ Future fetchToken(String name, String password) async {
   );
 
   if(response.statusCode == 401){
-    throw Exception(response.body);
+    throw KickerException(response.body);
   }
   else if(response.statusCode != 200) {
-    throw Exception('Failed to login');
+    throw KickerException('Failed to login');
   }
 
   final body = jsonDecode(response.body);
@@ -70,7 +71,7 @@ Future<List<Player>> fetchRanking(Position? orderBy,
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to load ranking');
+    throw KickerException('Failed to load ranking');
   }
 
   final List body = jsonDecode(response.body);
@@ -91,7 +92,7 @@ Future<List<Player>> fetchPlayers(String search, {int pageNumber = 1}) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to load players');
+    throw KickerException('Failed to load players');
   }
   final List body = jsonDecode(response.body);
 
@@ -112,7 +113,7 @@ Future<List<Match>> fetchHistory(Position position,
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to load history');
+    throw KickerException('Failed to load history');
   }
 
   final List body = jsonDecode(response.body);
@@ -132,7 +133,7 @@ Future<List<Match>> fetchToReview({int pageNumber = 1}) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to load toreview');
+    throw KickerException('Failed to load toreview');
   }
 
   final List body = jsonDecode(response.body);
@@ -152,7 +153,7 @@ Future<List<Match>> fetchUnderReview({int pageNumber = 1}) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to load underreview');
+    throw KickerException('Failed to load underreview');
   }
 
   final List body = jsonDecode(response.body);
@@ -172,7 +173,7 @@ Future<int> fetchToReviewCount() async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to load toreview count');
+    throw KickerException('Failed to load toreview count');
   }
 
   return int.parse(response.body);
@@ -188,10 +189,10 @@ Future<http.Response> createMatch(NewMatch match) async {
     body: jsonEncode(match.toJson()),
   );
   if(response.statusCode == 400){
-    throw Exception(response.body);
+    throw KickerException(response.body);
   }
   else if (response.statusCode != 200) {
-    throw Exception('Failed to create match');
+    throw KickerException('Failed to create match');
   }
 
   return response;
@@ -207,7 +208,7 @@ Future<http.Response> confirmTeam(int teamId) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception("Failed to confirm team");
+    throw KickerException("Failed to confirm team");
   }
 
   return response;
@@ -223,7 +224,7 @@ Future<http.Response> denyTeam(int teamId) async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception("Failed to deny team");
+    throw KickerException("Failed to deny team");
   }
 
   return response;
@@ -238,7 +239,7 @@ Future<Player> fetchCurrentPlayer() async {
   );
 
   if (response.statusCode != 200) {
-    throw Exception('Failed to load player');
+    throw KickerException('Failed to load player');
   }
 
   final body = jsonDecode(response.body);
