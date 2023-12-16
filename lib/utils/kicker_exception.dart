@@ -1,7 +1,10 @@
+
 class KickerException implements Exception {
-  final dynamic message;
+  final String message;
+  final String title;
 
-  KickerException([this.message]);
-
-  get getMessage => message;
+  KickerException({
+    required this.message,
+    this.title = "Error",
+  });
 }

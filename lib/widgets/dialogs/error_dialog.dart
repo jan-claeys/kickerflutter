@@ -13,7 +13,7 @@ class ErrorDialog extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Error"),
+      title: Text(exception.title),
       content: Text(exception.message),
       actions: [
         TextButton(

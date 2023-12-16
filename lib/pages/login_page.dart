@@ -40,6 +40,12 @@ class _LoginPageState extends State<LoginPage> {
                     labelText: 'Name',
                   ),
                   controller: nameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      throw KickerException(message: 'Please enter a name');
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -48,32 +54,49 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   obscureText: true,
                   controller: passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      throw KickerException(message: 'Please enter a password');
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    Session()
-                        .login(nameController.text, passwordController.text)
-                        .then((value) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const HomePage()));
-                    }).onError((KickerException exception, stackTrace) => showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                ErrorDialog(exception: exception)));
+                    try {
+                      //validate the form
+                      !_formKey.currentState!.validate();
+
+                      Session()
+                          .login(nameController.text, passwordController.text)
+                          .then((value) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    const HomePage()));
+                      }).onError((KickerException exception, stackTrace) =>
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      ErrorDialog(exception: exception)));
+                    } on KickerException catch (exception) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              ErrorDialog(exception: exception));
+                    }
                   },
                   child: const Text('Login'),
                 ),
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegisterPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterPage()));
                   },
                   child: const Text('Sign Up'),
                 ),

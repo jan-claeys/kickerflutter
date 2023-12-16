@@ -23,12 +23,8 @@ Future register(String name, String password) async {
     }),
   );
 
-  if (response.statusCode == 400) {
-    List<dynamic> errors = jsonDecode(response.body);
-    throw KickerException(errors[0]['description']);
-  }
-  else if(response.statusCode != 200) {
-    throw KickerException('Failed to register');
+  if (response.statusCode != 200) {
+    throw KickerException(title: "Failed to register", message: response.body);
   }
 }
 
@@ -44,11 +40,8 @@ Future fetchToken(String name, String password) async {
     }),
   );
 
-  if(response.statusCode == 401){
-    throw KickerException(response.body);
-  }
-  else if(response.statusCode != 200) {
-    throw KickerException('Failed to login');
+  if (response.statusCode != 200) {
+    throw KickerException(title: "Cannot authenticate", message: response.body);
   }
 
   final body = jsonDecode(response.body);
@@ -71,7 +64,8 @@ Future<List<Player>> fetchRanking(Position? orderBy,
   );
 
   if (response.statusCode != 200) {
-    throw KickerException('Failed to load ranking');
+    throw KickerException(
+        title: 'Failed to load ranking', message: response.body);
   }
 
   final List body = jsonDecode(response.body);
@@ -92,7 +86,8 @@ Future<List<Player>> fetchPlayers(String search, {int pageNumber = 1}) async {
   );
 
   if (response.statusCode != 200) {
-    throw KickerException('Failed to load players');
+    throw KickerException(
+        title: 'Failed to load players', message: response.body);
   }
   final List body = jsonDecode(response.body);
 
@@ -113,7 +108,8 @@ Future<List<Match>> fetchHistory(Position position,
   );
 
   if (response.statusCode != 200) {
-    throw KickerException('Failed to load history');
+    throw KickerException(
+        title: 'Failed to load history', message: response.body);
   }
 
   final List body = jsonDecode(response.body);
@@ -133,7 +129,8 @@ Future<List<Match>> fetchToReview({int pageNumber = 1}) async {
   );
 
   if (response.statusCode != 200) {
-    throw KickerException('Failed to load toreview');
+    throw KickerException(
+        title: 'Failed to load toreview', message: response.body);
   }
 
   final List body = jsonDecode(response.body);
@@ -153,7 +150,8 @@ Future<List<Match>> fetchUnderReview({int pageNumber = 1}) async {
   );
 
   if (response.statusCode != 200) {
-    throw KickerException('Failed to load underreview');
+    throw KickerException(
+        title: 'Failed to load underreview', message: response.body);
   }
 
   final List body = jsonDecode(response.body);
@@ -173,7 +171,8 @@ Future<int> fetchToReviewCount() async {
   );
 
   if (response.statusCode != 200) {
-    throw KickerException('Failed to load toreview count');
+    throw KickerException(
+        title: 'Failed to load toreview count', message: response.body);
   }
 
   return int.parse(response.body);
@@ -188,11 +187,10 @@ Future<http.Response> createMatch(NewMatch match) async {
     },
     body: jsonEncode(match.toJson()),
   );
-  if(response.statusCode == 400){
-    throw KickerException(response.body);
-  }
-  else if (response.statusCode != 200) {
-    throw KickerException('Failed to create match');
+
+  if (response.statusCode != 200) {
+    throw KickerException(
+        title: 'Failed to create match', message: response.body);
   }
 
   return response;
@@ -208,7 +206,8 @@ Future<http.Response> confirmTeam(int teamId) async {
   );
 
   if (response.statusCode != 200) {
-    throw KickerException("Failed to confirm team");
+    throw KickerException(
+        title: "Failed to confirm team", message: response.body);
   }
 
   return response;
@@ -224,7 +223,7 @@ Future<http.Response> denyTeam(int teamId) async {
   );
 
   if (response.statusCode != 200) {
-    throw KickerException("Failed to deny team");
+    throw KickerException(title: "Failed to deny team", message: response.body);
   }
 
   return response;
@@ -239,7 +238,8 @@ Future<Player> fetchCurrentPlayer() async {
   );
 
   if (response.statusCode != 200) {
-    throw KickerException('Failed to load player');
+    throw KickerException(
+        title: 'Failed to load player', message: response.body);
   }
 
   final body = jsonDecode(response.body);

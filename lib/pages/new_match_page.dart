@@ -66,7 +66,7 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     onChanged: (Player? value) => ally = value!,
                     validator: (value) {
                       if (value == null) {
-                        throw KickerException('Please enter an ally');
+                        throw KickerException(message: 'Please enter an ally');
                       }
                       return null;
                     },
@@ -81,7 +81,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     onChanged: (Player? value) => opponentAttacker = value!,
                     validator: (value) {
                       if (value == null) {
-                        throw KickerException('Please enter opponent attacker');
+                        throw KickerException(
+                            message: 'Please enter opponent attacker');
                       }
                       return null;
                     },
@@ -96,7 +97,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     onChanged: (Player? value) => opponentDefender = value!,
                     validator: (value) {
                       if (value == null) {
-                        throw KickerException('Please enter opponent defender');
+                        throw KickerException(
+                            message: 'Please enter opponent defender');
                       }
                       return null;
                     },
@@ -116,7 +118,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
                           controller: playerScoreController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              throw KickerException('Please enter a score');
+                              throw KickerException(
+                                  message: 'Please enter a score');
                             }
                             return null;
                           },
@@ -135,7 +138,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
                           controller: opponentScoreController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              throw KickerException('Please enter a score');
+                              throw KickerException(
+                                  message: 'Please enter a score');
                             }
                             return null;
                           },
@@ -148,30 +152,36 @@ class _NewMatchPageState extends State<NewMatchPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ElevatedButton(
-                        onPressed: () async {
+                        onPressed: () {
                           try {
-                            if (_formKey.currentState!.validate()) {
-                              final NewMatch newMatch = NewMatch(
-                                playerPosition: playerPosition,
-                                ally: ally,
-                                opponentAttacker: opponentAttacker,
-                                opponentDefender: opponentDefender,
-                                playerScore:
-                                    int.tryParse(playerScoreController.text),
-                                opponentScore:
-                                    int.tryParse(opponentScoreController.text),
-                              );
+                            //validate the form
+                            _formKey.currentState!.validate();
 
-                              await createMatch(newMatch);
-                              if (!context.mounted) return;
-                              Navigator.pop(context);
-                            }
-                          } on KickerException catch (e) {
-                            if (!context.mounted) return;
+                            final NewMatch newMatch = NewMatch(
+                              playerPosition: playerPosition,
+                              ally: ally,
+                              opponentAttacker: opponentAttacker,
+                              opponentDefender: opponentDefender,
+                              playerScore:
+                                  int.tryParse(playerScoreController.text),
+                              opponentScore:
+                                  int.tryParse(opponentScoreController.text),
+                            );
+
+                            createMatch(newMatch)
+                                .then((value) => Navigator.pop(context))
+                                .onError((KickerException exception, stackTrace) {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      ErrorDialog(exception: exception));
+                                });
+                          
+                          } on KickerException catch (exception) {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    ErrorDialog(exception: e));
+                                    ErrorDialog(exception: exception));
                           }
                         },
                         child: const Text('Submit'),
