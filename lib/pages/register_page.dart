@@ -3,9 +3,7 @@ import 'package:kickerflutter/pages/login_page.dart';
 import 'package:kickerflutter/utils/kicker_exception.dart';
 
 import '../network.dart';
-import '../session.dart';
 import '../widgets/dialogs/error_dialog.dart';
-import 'home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
