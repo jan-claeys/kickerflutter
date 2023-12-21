@@ -14,32 +14,60 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profile'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FutureBuilder<Player?>(
-                future: fetchCurrentPlayer(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<Player?> snapshot) =>
-                        snapshot.hasData
-                            ? Text(
-                                snapshot.data!.name,
-                                style: const TextStyle(fontSize: 24),
-                              )
-                            : const CircularProgressIndicator()),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                Session().logout();
-                Navigator.pop(context);
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));
-              },
-              child: const Text('Logout'),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          FutureBuilder<Player?>(
+              future: fetchCurrentPlayer(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<Player?> snapshot) =>
+                      snapshot.hasData
+                          ? Column(
+                              children: [
+                                const SizedBox(height: 32),
+                                CircleAvatar(
+                                  radius: 40,
+                                  child: Text(snapshot.data!.name[0],
+                                      style: const TextStyle(fontSize: 32)),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  snapshot.data!.name,
+                                  style: const TextStyle(fontSize: 24),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text('Rating: '),
+                                    Text(
+                                      snapshot.data!.rating.toString(),
+                                      style: const TextStyle(fontSize: 24),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                  const Text('Attack : '),
+                                  Text(
+                                    snapshot.data!.attackRating.toString(),
+                                    style: const TextStyle(fontSize: 24),
+                                  ),
+                                ],)
+                              ],
+                            )
+                          : const CircularProgressIndicator()),
+          const Expanded(child: SizedBox()),
+          ElevatedButton(
+            onPressed: () {
+              Session().logout();
+              Navigator.pop(context);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()));
+            },
+            child: const Text('Logout'),
+          ),
+          const SizedBox(height: 200),
+        ],
       ),
     );
   }

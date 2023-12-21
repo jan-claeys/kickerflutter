@@ -30,10 +30,10 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     scrollController.addListener(() {
-      startOffset ??= scrollController.offset;
+      startOffset ??= _getOffset();
 
       //check if the user is at the top of the list
-      if (!showFullLayout && scrollController.offset == 0) {
+      if (!showFullLayout && _getOffset() == 0) {
         setState(() {
           showFullLayout = true;
         });
@@ -41,16 +41,16 @@ class _HomePageState extends State<HomePage> {
 
       //check if the user is scrolling up or down by comparing the current offset with the previous offset
       if (startOffset != null &&
-          (scrollController.offset - startOffset!).abs() > thresshold) {
+          (_getOffset() - startOffset!).abs() > thresshold) {
         if (showFullLayout &&
-            scrollController.position.userScrollDirection ==
+            _getScrollDirection() ==
                 ScrollDirection.reverse) {
           setState(() {
             showFullLayout = false;
           });
         }
         if (!showFullLayout &&
-            scrollController.position.userScrollDirection ==
+            _getScrollDirection() ==
                 ScrollDirection.forward) {
           setState(() {
             showFullLayout = true;
@@ -73,6 +73,16 @@ class _HomePageState extends State<HomePage> {
     if (mounted) {
       super.setState(fn);
     }
+  }
+
+  //get the current offset of the scroll controller
+  double _getOffset() {
+    return scrollController.positions.last.pixels;
+  }
+
+  //get the current scroll direction of the scroll controller
+  ScrollDirection _getScrollDirection(){
+    return scrollController.positions.last.userScrollDirection;
   }
 
   @override
