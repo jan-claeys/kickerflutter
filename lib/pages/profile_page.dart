@@ -35,7 +35,10 @@ class ProfilePage extends StatelessWidget {
                                     snapshot.data!.name,
                                     style: const TextStyle(fontSize: 24),
                                   ),
-                                  const SizedBox(height: 16),
+                                  Text(
+                                    snapshot.data!.email,
+                                  ),
+                                  const SizedBox(height: 32),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

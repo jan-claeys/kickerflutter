@@ -3,6 +3,7 @@ import 'position.dart';
 class Player {
   final String id;
   final String name;
+  final String email;
   final int rating;
   final int attackRating;
   final int defendRating;
@@ -10,6 +11,7 @@ class Player {
   const Player({
     required this.id,
     required this.name,
+    required this.email,
     required this.rating,
     required this.attackRating,
     required this.defendRating,
@@ -30,6 +32,7 @@ class Player {
     return Player(
       id: json['id'],
       name: json['name'],
+      email: json['email'],
       rating: json['rating'],
       attackRating: json['attackRating'],
       defendRating: json['defendRating'],

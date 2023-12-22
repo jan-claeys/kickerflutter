@@ -15,6 +15,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmationController =
       TextEditingController();
@@ -47,6 +48,20 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(
+                  labelText: 'Email',
+                  suffixText: '@tillit.be',
+                ),
+                controller: emailController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    throw KickerException(message: 'Please enter an email');
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                 ),
                 controller: passwordController,
@@ -67,7 +82,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    throw KickerException(message: 'Please enter a confirmationpassword');
+                    throw KickerException(
+                        message: 'Please enter a confirmationpassword');
                   }
                   return null;
                 },
@@ -76,35 +92,35 @@ class _RegisterPageState extends State<RegisterPage> {
               ElevatedButton(
                 onPressed: () {
                   try {
-                  //validate the form
-                  !_formKey.currentState!.validate();
+                    //validate the form
+                    !_formKey.currentState!.validate();
 
-                  if (passwordController.text !=
-                      passwordConfirmationController.text) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ErrorDialog(
-                            exception: KickerException(
-                                message: "Passwords do not match"));
-                      },
-                    );
-                    return;
-                  }
-        
-                  register(nameController.text, passwordController.text)
-                      .then((value) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const LoginPage()));
-                  }).onError((KickerException exception, stackTrace) =>
-                          showDialog(
-                              context: context,
+                    if (passwordController.text !=
+                        passwordConfirmationController.text) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ErrorDialog(
+                              exception: KickerException(
+                                  message: "Passwords do not match"));
+                        },
+                      );
+                      return;
+                    }
+
+                    register(nameController.text, emailController.text,
+                            passwordController.text)
+                        .then((value) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  ErrorDialog(exception: exception)));
-                                  
+                                  const LoginPage()));
+                    }).onError((KickerException exception, stackTrace) =>
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    ErrorDialog(exception: exception)));
                   } on KickerException catch (exception) {
                     showDialog(
                       context: context,

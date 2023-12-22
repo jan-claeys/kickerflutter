@@ -11,7 +11,7 @@ import 'models/match.dart';
 
 const String baseUrl = "http://localhost:5277";
 
-Future register(String name, String password) async {
+Future register(String name, String email, String password) async {
   final response = await http.post(
     Uri.parse('$baseUrl/security/register'),
     headers: {
@@ -19,6 +19,7 @@ Future register(String name, String password) async {
     },
     body: jsonEncode({
       'name': name,
+      'email': email,
       'password': password,
     }),
   );
@@ -28,14 +29,14 @@ Future register(String name, String password) async {
   }
 }
 
-Future fetchToken(String name, String password) async {
+Future fetchToken(String email, String password) async {
   final response = await http.post(
     Uri.parse('$baseUrl/security/login'),
     headers: {
       HttpHeaders.contentTypeHeader: "application/json",
     },
     body: jsonEncode({
-      'name': name,
+      'email': email,
       'password': password,
     }),
   );

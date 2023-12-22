@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -37,12 +37,13 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Name',
+                    labelText: 'Email',
+                    suffixText: '@tillit.be'
                   ),
-                  controller: nameController,
+                  controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      throw KickerException(message: 'Please enter a name');
+                      throw KickerException(message: 'Please enter email');
                     }
                     return null;
                   },
@@ -51,12 +52,13 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Password',
+
                   ),
                   obscureText: true,
                   controller: passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      throw KickerException(message: 'Please enter a password');
+                      throw KickerException(message: 'Please enter password');
                     }
                     return null;
                   },
@@ -69,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                       !_formKey.currentState!.validate();
 
                       Session()
-                          .login(nameController.text, passwordController.text)
+                          .login(emailController.text, passwordController.text)
                           .then((value) {
                         Navigator.pushReplacement(
                             context,
