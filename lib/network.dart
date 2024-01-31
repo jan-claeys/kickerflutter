@@ -9,7 +9,7 @@ import 'package:kickerflutter/utils/kicker_exception.dart';
 import 'models/player.dart';
 import 'models/match.dart';
 
-const String baseUrl = "http://localhost:5277";
+const String baseUrl = "https://api20240131092254.azurewebsites.net";
 
 Future register(String name, String email, String password) async {
   final response = await http.post(
