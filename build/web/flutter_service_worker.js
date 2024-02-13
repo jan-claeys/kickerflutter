@@ -23,10 +23,11 @@ const RESOURCES = {"assets/AssetManifest.bin": "693635b5258fe5f1cda720cf224f158c
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"index.html": "c08f643344db4b75319089a54a1ccb3b",
-"/": "c08f643344db4b75319089a54a1ccb3b",
+"icons/tillit_logo_kicker.png": "31ba0f8885eff356c8e2206ecdb206cf",
+"index.html": "09a6521ae5d42edccbf6a50c9882d60a",
+"/": "09a6521ae5d42edccbf6a50c9882d60a",
 "main.dart.js": "b66f2dfcd4e213ccfc769e0f3d229714",
-"manifest.json": "ee29b86d29d988a4837e6930d15ad5a2",
+"manifest.json": "e768aeb5b52e7cf38ddd9fa6b2b21837",
 "version.json": "95bf36ed94ce146bb72ba7881d585a5d"};
 // The application shell files that are downloaded before a service worker can
 // start.
