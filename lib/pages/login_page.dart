@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kickerflutter/pages/home_page.dart';
 import 'package:kickerflutter/pages/register_page.dart';
 import 'package:kickerflutter/session.dart';
+import 'package:email_validator/email_validator.dart';
 
 import '../utils/kicker_exception.dart';
 import '../widgets/dialogs/error_dialog.dart';
@@ -38,12 +39,15 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Email',
-                    suffixText: '@tillit.be'
                   ),
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       throw KickerException(message: 'Please enter email');
+                    }
+                    if (!EmailValidator.validate(value)) {
+                      throw KickerException(
+                          message: 'Please enter a valid email');
                     }
                     return null;
                   },
@@ -52,7 +56,6 @@ class _LoginPageState extends State<LoginPage> {
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Password',
-
                   ),
                   obscureText: true,
                   controller: passwordController,
